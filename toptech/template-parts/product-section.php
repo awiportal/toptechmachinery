@@ -2,7 +2,7 @@
 /**
  * A single homepage product row: 6 products from one category + "View More".
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -36,7 +36,7 @@ if ( ! $q->have_posts() ) {
 	<div class="container">
 		<div class="rk-section__head">
 			<h2><?php echo esc_html( $term->name ); ?></h2>
-			<a class="rk-viewmore" href="<?php echo esc_url( get_term_link( $term ) ); ?>"><?php esc_html_e( 'View more', 'ricky-tools' ); ?> &rarr;</a>
+			<a class="rk-viewmore" href="<?php echo esc_url( get_term_link( $term ) ); ?>"><?php esc_html_e( 'View more', 'toptech-machinery' ); ?> &rarr;</a>
 		</div>
 		<div class="rk-products">
 			<?php

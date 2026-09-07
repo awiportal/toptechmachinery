@@ -51,6 +51,6 @@ Google Listings & Ads plugin):
 - **Brand** → already handled via the `product_brand` taxonomy.
 
 The homepage product rows read from these category slugs (edit in `front-page.php` or via the
-`ricky_homepage_categories` filter):
+`toptech_homepage_categories` filter):
 `water-pumps, power-tools, solar-panels, welding-machines, generators, batteries`
 Adjust the slugs to match the exact category slugs WooCommerce creates on import.

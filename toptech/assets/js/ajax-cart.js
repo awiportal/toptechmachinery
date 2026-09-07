@@ -1,7 +1,7 @@
-/* Ricky Tools - AJAX add-to-cart with slide-in cart drawer, mini-cart fragments, live search. */
+/* TopTech Machinery - AJAX add-to-cart with slide-in cart drawer, mini-cart fragments, live search. */
 (() => {
   'use strict';
-  if (typeof RickyAjax === 'undefined') return;
+  if (typeof ToptechAjax === 'undefined') return;
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
@@ -34,16 +34,16 @@
     if (btn) { label = btn.innerHTML; btn.disabled = true; btn.classList.add('is-loading'); }
     if (drawer) { drawer.classList.add('is-loading'); openDrawer(); }
     try {
-      const body = new URLSearchParams({ action: 'ricky_add_to_cart', nonce: RickyAjax.nonce, product_id: id, quantity: qty || 1 });
-      const res = await fetch(RickyAjax.ajaxUrl, { method: 'POST', body, credentials: 'same-origin' });
+      const body = new URLSearchParams({ action: 'toptech_add_to_cart', nonce: ToptechAjax.nonce, product_id: id, quantity: qty || 1 });
+      const res = await fetch(ToptechAjax.ajaxUrl, { method: 'POST', body, credentials: 'same-origin' });
       const data = await res.json();
       if (applyFragments(data)) {
         openDrawer();
       } else {
-        window.location.href = RickyAjax.cartUrl;
+        window.location.href = ToptechAjax.cartUrl;
       }
     } catch (err) {
-      window.location.href = RickyAjax.cartUrl;
+      window.location.href = ToptechAjax.cartUrl;
     } finally {
       if (btn) { btn.disabled = false; btn.classList.remove('is-loading'); if (label !== undefined) btn.innerHTML = label; }
       if (drawer) drawer.classList.remove('is-loading');
@@ -52,8 +52,8 @@
 
   /* Delegated clicks: card add buttons + drawer open/close */
   document.addEventListener('click', (e) => {
-    const add = e.target.closest('[data-ricky-add]');
-    if (add) { e.preventDefault(); addToCart(add.getAttribute('data-ricky-add'), add.getAttribute('data-qty') || 1, add); return; }
+    const add = e.target.closest('[data-toptech-add]');
+    if (add) { e.preventDefault(); addToCart(add.getAttribute('data-toptech-add'), add.getAttribute('data-qty') || 1, add); return; }
     const wcAdd = e.target.closest('a.add_to_cart_button[data-product_id], .ajax_add_to_cart[data-product_id]');
     if (wcAdd) {
       const complex = wcAdd.classList.contains('product_type_variable') || wcAdd.classList.contains('product_type_grouped');
@@ -110,7 +110,7 @@
       if (ctrl) ctrl.abort();
       ctrl = new AbortController();
       try {
-        const url = `${RickyAjax.ajaxUrl}?action=ricky_search&nonce=${RickyAjax.nonce}&q=${encodeURIComponent(q)}`;
+        const url = `${ToptechAjax.ajaxUrl}?action=toptech_search&nonce=${ToptechAjax.nonce}&q=${encodeURIComponent(q)}`;
         const res = await fetch(url, { signal: ctrl.signal, credentials: 'same-origin' });
         const json = await res.json();
         if (json && json.success) { cache.set(q, json.data); render(json.data); }

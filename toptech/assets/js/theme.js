@@ -1,4 +1,4 @@
-/* Ricky Tools - UI behaviours (sticky header, slider, back-to-top). ES2024, no deps. */
+/* TopTech Machinery - UI behaviours (sticky header, slider, back-to-top). ES2024, no deps. */
 (() => {
   'use strict';
   const on = (el, ev, fn, o) => el && el.addEventListener(ev, fn, o);

@@ -2,12 +2,12 @@
 /**
  * Theme setup: supports, menus, image sizes, i18n.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,7 +30,7 @@ final class Setup {
 	 * Declare theme feature supports.
 	 */
 	public function theme_supports(): void {
-		load_theme_textdomain( 'ricky-tools', RICKY_DIR . 'languages' );
+		load_theme_textdomain( 'toptech-machinery', TOPTECH_DIR . 'languages' );
 
 		add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );
@@ -59,11 +59,11 @@ final class Setup {
 	public function register_menus(): void {
 		register_nav_menus(
 			array(
-				'primary'        => __( 'Primary Navigation', 'ricky-tools' ),
-				'vertical_cats'  => __( 'Hero Vertical Categories', 'ricky-tools' ),
-				'footer_company' => __( 'Footer: Company', 'ricky-tools' ),
-				'footer_service' => __( 'Footer: Customer Service', 'ricky-tools' ),
-				'footer_policies'=> __( 'Footer: Policies', 'ricky-tools' ),
+				'primary'        => __( 'Primary Navigation', 'toptech-machinery' ),
+				'vertical_cats'  => __( 'Hero Vertical Categories', 'toptech-machinery' ),
+				'footer_company' => __( 'Footer: Company', 'toptech-machinery' ),
+				'footer_service' => __( 'Footer: Customer Service', 'toptech-machinery' ),
+				'footer_policies'=> __( 'Footer: Policies', 'toptech-machinery' ),
 			)
 		);
 	}
@@ -72,9 +72,9 @@ final class Setup {
 	 * Register 1:1 product image size for uniform cards + hero.
 	 */
 	public function image_sizes(): void {
-		add_image_size( 'ricky-card', 600, 600, true );
-		add_image_size( 'ricky-hero', 1200, 500, true );
-		add_image_size( 'ricky-cat', 480, 360, true );
+		add_image_size( 'toptech-card', 600, 600, true );
+		add_image_size( 'toptech-hero', 1200, 500, true );
+		add_image_size( 'toptech-cat', 480, 360, true );
 	}
 
 	/**
@@ -87,10 +87,10 @@ final class Setup {
 			'before_title'  => '<h3 class="widget__title">',
 			'after_title'   => '</h3>',
 		);
-		register_sidebar( array_merge( $defaults, array( 'name' => __( 'Shop Sidebar', 'ricky-tools' ), 'id' => 'shop-sidebar' ) ) );
+		register_sidebar( array_merge( $defaults, array( 'name' => __( 'Shop Sidebar', 'toptech-machinery' ), 'id' => 'shop-sidebar' ) ) );
 		foreach ( array( 1, 2, 3, 4 ) as $i ) {
 			register_sidebar( array_merge( $defaults, array(
-				'name' => sprintf( __( 'Footer Column %d', 'ricky-tools' ), $i ),
+				'name' => sprintf( __( 'Footer Column %d', 'toptech-machinery' ), $i ),
 				'id'   => 'footer-' . $i,
 			) ) );
 		}

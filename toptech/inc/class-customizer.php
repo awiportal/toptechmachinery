@@ -2,12 +2,12 @@
 /**
  * Theme Customizer: brand colours + contact/support details.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,40 +25,40 @@ final class Customizer {
 	 * @param \WP_Customize_Manager $wp_customize Customizer manager.
 	 */
 	public function register( $wp_customize ): void {
-		$wp_customize->add_panel( 'ricky_panel', array( 'title' => __( 'Ricky Tools', 'ricky-tools' ), 'priority' => 20 ) );
+		$wp_customize->add_panel( 'toptech_panel', array( 'title' => __( 'TopTech Machinery', 'toptech-machinery' ), 'priority' => 20 ) );
 
 		// Colours.
-		$wp_customize->add_section( 'ricky_colors', array( 'title' => __( 'Brand Colours', 'ricky-tools' ), 'panel' => 'ricky_panel' ) );
-		$this->color( $wp_customize, 'ricky_yellow', '#FDB913', __( 'Primary (Yellow)', 'ricky-tools' ) );
-		$this->color( $wp_customize, 'ricky_navy', '#0B1E3F', __( 'Secondary (Dark Blue)', 'ricky-tools' ) );
+		$wp_customize->add_section( 'toptech_colors', array( 'title' => __( 'Brand Colours', 'toptech-machinery' ), 'panel' => 'toptech_panel' ) );
+		$this->color( $wp_customize, 'toptech_primary', '#005EB8', __( 'Primary (Blue)', 'toptech-machinery' ) );
+		$this->color( $wp_customize, 'toptech_navy', '#0B1E3F', __( 'Secondary (Dark Blue)', 'toptech-machinery' ) );
 
 		// Contact + support.
-		$wp_customize->add_section( 'ricky_contact', array( 'title' => __( 'Contact & Support', 'ricky-tools' ), 'panel' => 'ricky_panel' ) );
-		$this->text( $wp_customize, 'ricky_phone', '0793 965654', __( 'Phone / WhatsApp', 'ricky-tools' ) );
-		$this->text( $wp_customize, 'ricky_email', 'info@rickytools.com', __( 'Email', 'ricky-tools' ) );
-		$this->text( $wp_customize, 'ricky_hours', 'Mon-Sat 8:00am - 6:00pm', __( 'Support Hours', 'ricky-tools' ) );
-		$this->text( $wp_customize, 'ricky_address', 'Tusky Magic Business Centre, Junction of Mfangano Lane and Ronald Ngara Street, Nairobi CBD', __( 'Business Address', 'ricky-tools' ) );
-		$this->text( $wp_customize, 'ricky_whatsapp', '254793965654', __( 'WhatsApp number (intl, no +)', 'ricky-tools' ) );
+		$wp_customize->add_section( 'toptech_contact', array( 'title' => __( 'Contact & Support', 'toptech-machinery' ), 'panel' => 'toptech_panel' ) );
+		$this->text( $wp_customize, 'toptech_phone', '0719 261277', __( 'Phone / WhatsApp', 'toptech-machinery' ) );
+		$this->text( $wp_customize, 'toptech_email', 'info@toptechmachinery.co.ke', __( 'Email', 'toptech-machinery' ) );
+		$this->text( $wp_customize, 'toptech_hours', 'Mon-Sat 8:00am - 6:00pm', __( 'Support Hours', 'toptech-machinery' ) );
+		$this->text( $wp_customize, 'toptech_address', 'Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya', __( 'Business Address', 'toptech-machinery' ) );
+		$this->text( $wp_customize, 'toptech_whatsapp', '254719261277', __( 'WhatsApp number (intl, no +)', 'toptech-machinery' ) );
 	}
 
 	private function color( $wp, string $id, string $default, string $label ): void {
 		$wp->add_setting( $id, array( 'default' => $default, 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
-		$wp->add_control( new \WP_Customize_Color_Control( $wp, $id, array( 'label' => $label, 'section' => 'ricky_colors' ) ) );
+		$wp->add_control( new \WP_Customize_Color_Control( $wp, $id, array( 'label' => $label, 'section' => 'toptech_colors' ) ) );
 	}
 
 	private function text( $wp, string $id, string $default, string $label ): void {
 		$wp->add_setting( $id, array( 'default' => $default, 'sanitize_callback' => 'sanitize_text_field' ) );
-		$wp->add_control( $id, array( 'label' => $label, 'section' => 'ricky_contact', 'type' => 'text' ) );
+		$wp->add_control( $id, array( 'label' => $label, 'section' => 'toptech_contact', 'type' => 'text' ) );
 	}
 
 	/**
 	 * Print brand colours as CSS custom properties.
 	 */
 	public function output_css_vars(): void {
-		$yellow = sanitize_hex_color( (string) get_theme_mod( 'ricky_yellow', '#FDB913' ) );
-		$navy   = sanitize_hex_color( (string) get_theme_mod( 'ricky_navy', '#0B1E3F' ) );
+		$yellow = sanitize_hex_color( (string) get_theme_mod( 'toptech_primary', '#005EB8' ) );
+		$navy   = sanitize_hex_color( (string) get_theme_mod( 'toptech_navy', '#0B1E3F' ) );
 		printf(
-			'<style id="ricky-brand">:root{--rk-yellow:%s;--rk-navy:%s}</style>' . "\n",
+			'<style id="toptech-brand">:root{--rk-primary:%s;--rk-navy:%s}</style>' . "\n",
 			esc_html( $yellow ),
 			esc_html( $navy )
 		);

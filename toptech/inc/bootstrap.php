@@ -2,37 +2,37 @@
 /**
  * Instantiate theme modules on load (each guarded).
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
 defined( 'ABSPATH' ) || exit;
 
-require RICKY_DIR . 'inc/helpers.php';
+require TOPTECH_DIR . 'inc/helpers.php';
 
-$ricky_modules = array(
-	'RickyTools\\Setup',
-	'RickyTools\\Assets',
-	'RickyTools\\Security',
-	'RickyTools\\WooCommerce_Support',
-	'RickyTools\\Ajax',
-	'RickyTools\\Customizer',
-	'RickyTools\\Schema',
-	'RickyTools\\Content_Installer',
-	'RickyTools\\Demo_Import',
-	'RickyTools\\Single_Product',
-		'RickyTools\\Merchant_Inspector',
+$toptech_modules = array(
+	'ToptechMachinery\\Setup',
+	'ToptechMachinery\\Assets',
+	'ToptechMachinery\\Security',
+	'ToptechMachinery\\WooCommerce_Support',
+	'ToptechMachinery\\Ajax',
+	'ToptechMachinery\\Customizer',
+	'ToptechMachinery\\Schema',
+	'ToptechMachinery\\Content_Installer',
+	'ToptechMachinery\\Demo_Import',
+	'ToptechMachinery\\Single_Product',
+		'ToptechMachinery\\Merchant_Inspector',
 );
 
-foreach ( $ricky_modules as $ricky_class ) {
+foreach ( $toptech_modules as $toptech_class ) {
 	try {
-		if ( class_exists( $ricky_class ) ) {
-			( new $ricky_class() )->hooks();
+		if ( class_exists( $toptech_class ) ) {
+			( new $toptech_class() )->hooks();
 		}
 	} catch ( \Throwable $e ) {
-		error_log( 'Ricky Tools module ' . $ricky_class . ' failed: ' . $e->getMessage() );
+		error_log( 'TopTech Machinery module ' . $toptech_class . ' failed: ' . $e->getMessage() );
 	}
 }
 
-require RICKY_DIR . 'inc/required-plugins.php';
+require TOPTECH_DIR . 'inc/required-plugins.php';

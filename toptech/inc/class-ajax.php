@@ -4,12 +4,12 @@
  *
  * Every endpoint verifies a nonce, sanitises input, and escapes output.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -19,11 +19,11 @@ defined( 'ABSPATH' ) || exit;
 final class Ajax {
 
 	public function hooks(): void {
-		add_action( 'wp_ajax_ricky_add_to_cart', array( $this, 'add_to_cart' ) );
-		add_action( 'wp_ajax_nopriv_ricky_add_to_cart', array( $this, 'add_to_cart' ) );
+		add_action( 'wp_ajax_toptech_add_to_cart', array( $this, 'add_to_cart' ) );
+		add_action( 'wp_ajax_nopriv_toptech_add_to_cart', array( $this, 'add_to_cart' ) );
 
-		add_action( 'wp_ajax_ricky_search', array( $this, 'live_search' ) );
-		add_action( 'wp_ajax_nopriv_ricky_search', array( $this, 'live_search' ) );
+		add_action( 'wp_ajax_toptech_search', array( $this, 'live_search' ) );
+		add_action( 'wp_ajax_nopriv_toptech_search', array( $this, 'live_search' ) );
 	}
 
 	/**
@@ -33,19 +33,19 @@ final class Ajax {
 		// Public endpoint (own cart-session / read-only search); kept nonce-free so it keeps working on fully cached pages.
 
 		if ( ! function_exists( 'WC' ) || null === WC()->cart ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'Cart unavailable.', 'ricky-tools' ) ), 400 );
+			wp_send_json_error( array( 'message' => esc_html__( 'Cart unavailable.', 'toptech-machinery' ) ), 400 );
 		}
 
 		$product_id = isset( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
 		$quantity   = isset( $_POST['quantity'] ) ? max( 1, absint( wp_unslash( $_POST['quantity'] ) ) ) : 1;
 
 		if ( ! $product_id || 'product' !== get_post_type( $product_id ) ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'Invalid product.', 'ricky-tools' ) ), 400 );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid product.', 'toptech-machinery' ) ), 400 );
 		}
 
 		$added = WC()->cart->add_to_cart( $product_id, $quantity );
 		if ( ! $added ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'Could not add to cart.', 'ricky-tools' ) ), 400 );
+			wp_send_json_error( array( 'message' => esc_html__( 'Could not add to cart.', 'toptech-machinery' ) ), 400 );
 		}
 
 		WC_AJAX::get_refreshed_fragments();
@@ -123,7 +123,7 @@ final class Ajax {
 				$terms[] = array(
 					'label' => esc_html( $t->name ),
 					'url'   => esc_url( get_term_link( $t ) ),
-					'type'  => 'product_cat' === $tax ? esc_html__( 'Category', 'ricky-tools' ) : esc_html__( 'Brand', 'ricky-tools' ),
+					'type'  => 'product_cat' === $tax ? esc_html__( 'Category', 'toptech-machinery' ) : esc_html__( 'Brand', 'toptech-machinery' ),
 				);
 			}
 		}

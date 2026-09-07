@@ -6,16 +6,16 @@
  * times out on shared hosting. We prompt only the essentials; users can add
  * SEO / caching / invoicing plugins later from Plugins > Add New.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
 defined( 'ABSPATH' ) || exit;
 
-$ricky_tgmpa = RICKY_DIR . 'inc/tgmpa/class-tgm-plugin-activation.php';
-if ( is_readable( $ricky_tgmpa ) ) {
-	require $ricky_tgmpa;
+$toptech_tgmpa = TOPTECH_DIR . 'inc/tgmpa/class-tgm-plugin-activation.php';
+if ( is_readable( $toptech_tgmpa ) ) {
+	require $toptech_tgmpa;
 }
 
 add_action(
@@ -34,8 +34,8 @@ add_action(
 		);
 
 		$config = array(
-			'id'           => 'ricky-tools',
-			'menu'         => 'ricky-install-plugins',
+			'id'           => 'toptech-machinery',
+			'menu'         => 'toptech-install-plugins',
 			'parent_slug'  => 'themes.php',
 			'capability'   => 'edit_theme_options',
 			'has_notices'  => true,

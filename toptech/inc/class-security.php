@@ -2,12 +2,12 @@
 /**
  * Security hardening: headers, disclosure reduction, safe defaults.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -126,6 +126,6 @@ final class Security {
 	 * Generic login error to prevent username/password disclosure.
 	 */
 	public function generic_login_error() {
-		return esc_html__( 'Invalid login details.', 'ricky-tools' );
+		return esc_html__( 'Invalid login details.', 'toptech-machinery' );
 	}
 }

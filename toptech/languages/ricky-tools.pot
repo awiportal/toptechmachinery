@@ -1,7 +1,0 @@
-# Ricky Tools translation template.
-# Copyright (C) 2026 Ricky Tools
-msgid ""
-msgstr ""
-"Project-Id-Version: Ricky Tools 1.0.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"X-Domain: ricky-tools\n"

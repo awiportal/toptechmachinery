@@ -1,5 +1,5 @@
 # ==============================================================
-# RICKY TOOLS - performance rules (compression + browser cache + WebP)
+# TOPTECH MACHINERY - performance rules (compression + browser cache + WebP)
 # Copy EVERYTHING below into the .htaccess file in your WordPress
 # ROOT folder (public_html), ABOVE the line "# BEGIN WordPress".
 # Back the file up first. These are plain Apache rules - no plugin.

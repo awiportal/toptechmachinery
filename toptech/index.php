@@ -2,7 +2,7 @@
 /**
  * Generic fallback template (blog/archive).
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -28,7 +28,7 @@ get_header();
 			the_posts_pagination();
 		else :
 			?>
-			<p><?php esc_html_e( 'Nothing found.', 'ricky-tools' ); ?></p>
+			<p><?php esc_html_e( 'Nothing found.', 'toptech-machinery' ); ?></p>
 		<?php endif; ?>
 </main>
 <?php

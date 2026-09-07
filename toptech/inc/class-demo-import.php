@@ -7,12 +7,12 @@
  * single "Import Demo Data" button that loads pages, menus, product
  * categories, brands and sample products.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -39,10 +39,10 @@ final class Demo_Import {
 	public function import_files(): array {
 		return array(
 			array(
-				'import_file_name'       => __( 'Ricky Tools - Full Demo', 'ricky-tools' ),
-				'local_import_file'      => RICKY_DIR . 'demo/content.xml',
-				'import_preview_image_url' => RICKY_URI . 'assets/img/logo.webp',
-				'import_notice'          => __( 'Installs demo pages, menus, product categories, brands and sample products. After importing, use Products > Import to load your full product CSV.', 'ricky-tools' ),
+				'import_file_name'       => __( 'TopTech Machinery - Full Demo', 'toptech-machinery' ),
+				'local_import_file'      => TOPTECH_DIR . 'demo/content.xml',
+				'import_preview_image_url' => TOPTECH_URI . 'assets/img/logo.webp',
+				'import_notice'          => __( 'Installs demo pages, menus, product categories, brands and sample products. After importing, use Products > Import to load your full product CSV.', 'toptech-machinery' ),
 				'preview_url'            => home_url( '/' ),
 			),
 		);
@@ -56,10 +56,10 @@ final class Demo_Import {
 	 */
 	public function page_setup( array $default ): array {
 		$default['parent_slug'] = 'themes.php';
-		$default['page_title']  = __( 'Ricky Tools Demo Import', 'ricky-tools' );
-		$default['menu_title']  = __( 'Import Demo Data', 'ricky-tools' );
+		$default['page_title']  = __( 'TopTech Machinery Demo Import', 'toptech-machinery' );
+		$default['menu_title']  = __( 'Import Demo Data', 'toptech-machinery' );
 		$default['capability']  = 'import';
-		$default['menu_slug']   = 'ricky-demo-import';
+		$default['menu_slug']   = 'toptech-demo-import';
 		return $default;
 	}
 
@@ -70,7 +70,7 @@ final class Demo_Import {
 		// Assign primary menu if one was imported.
 		$primary = get_term_by( 'name', 'Primary', 'nav_menu' );
 		if ( ! $primary ) {
-			$primary = get_term_by( 'name', 'Ricky primary', 'nav_menu' );
+			$primary = get_term_by( 'name', 'TopTech primary', 'nav_menu' );
 		}
 		$locations = get_theme_mod( 'nav_menu_locations', array() );
 		if ( $primary ) {

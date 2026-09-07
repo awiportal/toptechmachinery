@@ -2,12 +2,12 @@
 /**
  * Front-end + editor asset loading with performance defaults.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,26 +26,26 @@ final class Assets {
 	}
 
 	public function enqueue(): void {
-		$css_rel = file_exists( RICKY_DIR . 'assets/css/theme.min.css' ) ? 'assets/css/theme.min.css' : 'assets/css/theme.css';
-		wp_enqueue_style( 'ricky-theme', RICKY_URI . $css_rel, array(), RICKY_VERSION );
-		wp_style_add_data( 'ricky-theme', 'rtl', 'replace' );
+		$css_rel = file_exists( TOPTECH_DIR . 'assets/css/theme.min.css' ) ? 'assets/css/theme.min.css' : 'assets/css/theme.css';
+		wp_enqueue_style( 'toptech-theme', TOPTECH_URI . $css_rel, array(), TOPTECH_VERSION );
+		wp_style_add_data( 'toptech-theme', 'rtl', 'replace' );
 
-		wp_enqueue_script( 'ricky-theme', RICKY_URI . 'assets/js/theme.js', array(), RICKY_VERSION, true );
+		wp_enqueue_script( 'toptech-theme', TOPTECH_URI . 'assets/js/theme.js', array(), TOPTECH_VERSION, true );
 
 		if ( class_exists( 'WooCommerce' ) ) {
-			wp_enqueue_script( 'ricky-ajax', RICKY_URI . 'assets/js/ajax-cart.js', array( 'ricky-theme' ), RICKY_VERSION, true );
+			wp_enqueue_script( 'toptech-ajax', TOPTECH_URI . 'assets/js/ajax-cart.js', array( 'toptech-theme' ), TOPTECH_VERSION, true );
 			wp_localize_script(
-				'ricky-ajax',
-				'RickyAjax',
+				'toptech-ajax',
+				'ToptechAjax',
 				array(
 					'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-					'nonce'     => wp_create_nonce( 'ricky_ajax' ),
+					'nonce'     => wp_create_nonce( 'toptech_ajax' ),
 					'cartUrl'   => wc_get_cart_url(),
 					'i18n'      => array(
-						'added'   => esc_html__( 'Added to cart', 'ricky-tools' ),
-						'adding'  => esc_html__( 'Adding...', 'ricky-tools' ),
-						'error'   => esc_html__( 'Something went wrong. Please try again.', 'ricky-tools' ),
-						'viewCart'=> esc_html__( 'View cart', 'ricky-tools' ),
+						'added'   => esc_html__( 'Added to cart', 'toptech-machinery' ),
+						'adding'  => esc_html__( 'Adding...', 'toptech-machinery' ),
+						'error'   => esc_html__( 'Something went wrong. Please try again.', 'toptech-machinery' ),
+						'viewCart'=> esc_html__( 'View cart', 'toptech-machinery' ),
 					),
 				)
 			);
@@ -60,14 +60,14 @@ final class Assets {
 	 * Inline minimal critical CSS for fast FCP. Uses system fonts (no webfont download).
 	 */
 	public function preload_and_critical(): void {
-		echo '<style id="ricky-critical">:root{--rk-yellow:#FDB913;--rk-navy:#0B1E3F}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#1a1f2e;background:#fff}.rk-header{background:var(--rk-navy)}img{max-width:100%;height:auto}</style>' . "\n";
+		echo '<style id="toptech-critical">:root{--rk-primary:#005EB8;--rk-navy:#0B1E3F}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#1a1f2e;background:#fff}.rk-header{background:var(--rk-navy)}img{max-width:100%;height:auto}</style>' . "\n";
 	}
 
 	/**
 	 * Defer all theme JS to remove render-blocking.
 	 */
 	public function defer_scripts( $tag, $handle = '', $src = '' ) {
-		$defer = array( 'ricky-theme', 'ricky-ajax' );
+		$defer = array( 'toptech-theme', 'toptech-ajax' );
 		if ( is_string( $tag ) && in_array( $handle, $defer, true ) && false === strpos( $tag, 'defer' ) ) {
 			$tag = str_replace( ' src', ' defer src', $tag );
 		}

@@ -2,15 +2,15 @@
 /**
  * Auto-creates the legal / informational pages (fully editable) and builds
  * navigation menus when the theme is activated. All content uses the real
- * Ricky Tools business details and is written to satisfy Google Merchant
+ * TopTech Machinery business details and is written to satisfy Google Merchant
  * Center and standard e-commerce trust requirements.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Content_Installer {
 
-	private const FLAG = 'ricky_content_installed_v1';
+	private const FLAG = 'toptech_content_installed_v1';
 
 	public function hooks(): void {
 		add_action( 'admin_init', array( $this, 'install' ) );
@@ -45,7 +45,7 @@ final class Content_Installer {
 			$this->build_menus( $ids );
 			update_option( self::FLAG, time() );
 		} catch ( \Throwable $e ) {
-			error_log( 'Ricky Tools content install failed: ' . $e->getMessage() );
+			error_log( 'TopTech Machinery content install failed: ' . $e->getMessage() );
 		}
 	}
 
@@ -57,7 +57,7 @@ final class Content_Installer {
 	 * Runs once (own flag) so it applies even if pages were already installed.
 	 */
 	public function ensure_front_page(): void {
-		if ( get_option( 'ricky_front_page_v1' ) ) {
+		if ( get_option( 'toptech_front_page_v1' ) ) {
 			return;
 		}
 		if ( ! function_exists( 'current_user_can' ) || ! current_user_can( 'edit_theme_options' ) ) {
@@ -82,9 +82,9 @@ final class Content_Installer {
 				update_option( 'show_on_front', 'page' );
 				update_option( 'page_on_front', (int) $home_id );
 			}
-			update_option( 'ricky_front_page_v1', time() );
+			update_option( 'toptech_front_page_v1', time() );
 		} catch ( \Throwable $e ) {
-			error_log( 'Ricky Tools front page setup failed: ' . $e->getMessage() );
+			error_log( 'TopTech Machinery front page setup failed: ' . $e->getMessage() );
 		}
 	}
 
@@ -117,7 +117,7 @@ final class Content_Installer {
 			'footer_policies' => array( 'privacy-policy', 'terms-conditions', 'return-refund-policy', 'shipping-delivery-policy', 'warranty-policy', 'cookie-policy' ),
 		);
 		foreach ( $defs as $location => $slugs ) {
-			$menu_name = 'Ricky ' . $location;
+			$menu_name = 'TopTech ' . $location;
 			$menu = wp_get_nav_menu_object( $menu_name );
 			$created = $menu ? (int) $menu->term_id : wp_create_nav_menu( $menu_name );
 			if ( is_wp_error( $created ) ) {
@@ -154,15 +154,15 @@ final class Content_Installer {
 	 * @return array<string,array{title:string,content:string}>
 	 */
 	private function pages(): array {
-		$name  = 'Ricky Tools';
-		$phone = '0793 965654';
-		$mail  = 'info@rickytools.com';
-		$addr  = 'Tusky Magic Business Centre, Junction of Mfangano Lane and Ronald Ngara Street, Nairobi CBD, Kenya';
+		$name  = 'TopTech Machinery';
+		$phone = '0719 261277';
+		$mail  = 'info@toptechmachinery.co.ke';
+		$addr  = 'Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya';
 
 		return array(
 			'about-us' => array(
 				'title'   => 'About Us',
-				'content' => "<h2>Who We Are</h2><p>{$name} is a Kenyan retailer of power tools, solar equipment, generators, water pumps, welding machines and general hardware. Operating from Nairobi's Central Business District, we supply genuine, warranty-backed equipment to contractors, artisans, farmers, businesses and homeowners across Kenya.</p><h2>What We Do</h2><p>We stock trusted brands including Total, Ingco, Makita, DeWalt, Honda, Solarmax and many more. Every product we sell is sourced from authorised distributors, so you can buy with confidence knowing you are getting authentic equipment at fair, clearly displayed prices.</p><h2>Why Shop With Us</h2><ul><li><strong>Genuine products:</strong> Authentic, brand-new equipment from authorised suppliers.</li><li><strong>Fair pricing:</strong> Transparent prices in Kenyan Shillings with no hidden charges.</li><li><strong>Fast delivery:</strong> Countrywide delivery, with same-day dispatch for orders placed before our daily cut-off in Nairobi.</li><li><strong>Expert support:</strong> Our team helps you choose the right tool for the job.</li><li><strong>After-sales care:</strong> Manufacturer warranties and responsive support.</li></ul><h2>Visit Us</h2><p>You are welcome at our shop: {$addr}. Call or WhatsApp us on {$phone} or email {$mail}.</p>",
+				'content' => "<h2>Who We Are</h2><p>{$name} is a Kenyan retailer of power tools, solar equipment, generators, water pumps, welding machines and general hardware. Operating from Nairobi, we supply genuine, warranty-backed equipment to contractors, artisans, farmers, businesses and homeowners across Kenya.</p><h2>What We Do</h2><p>We stock trusted brands including Total, Ingco, Makita, DeWalt, Honda, Solarmax and many more. Every product we sell is sourced from authorised distributors, so you can buy with confidence knowing you are getting authentic equipment at fair, clearly displayed prices.</p><h2>Why Shop With Us</h2><ul><li><strong>Genuine products:</strong> Authentic, brand-new equipment from authorised suppliers.</li><li><strong>Fair pricing:</strong> Transparent prices in Kenyan Shillings with no hidden charges.</li><li><strong>Fast delivery:</strong> Countrywide delivery, with same-day dispatch for orders placed before our daily cut-off in Nairobi.</li><li><strong>Expert support:</strong> Our team helps you choose the right tool for the job.</li><li><strong>After-sales care:</strong> Manufacturer warranties and responsive support.</li></ul><h2>Visit Us</h2><p>You are welcome at our shop: {$addr}. Call or WhatsApp us on {$phone} or email {$mail}.</p>",
 			),
 			'contact-us' => array(
 				'title'   => 'Contact Us',
@@ -178,7 +178,7 @@ final class Content_Installer {
 			),
 			'shipping-delivery-policy' => array(
 				'title'   => 'Shipping &amp; Delivery Policy',
-				'content' => "<h2>Delivery Coverage</h2><p>{$name} delivers countrywide across Kenya. We dispatch from our Nairobi CBD shop.</p><h2>Delivery Times</h2><ul><li><strong>Nairobi:</strong> Same-day or next-day delivery for orders confirmed before 3:00pm on business days.</li><li><strong>Major towns:</strong> 1-3 business days via courier or parcel service.</li><li><strong>Remote areas:</strong> 2-5 business days, delivered to the nearest courier pick-up point where door delivery is unavailable.</li></ul><h2>Delivery Charges</h2><p>Delivery fees are calculated at checkout based on your location, order size and weight. Charges are shown clearly before you pay. Selected promotions may include free delivery.</p><h2>Order Processing</h2><p>Orders are processed on business days (Monday to Saturday, excluding public holidays). You will receive confirmation by phone, WhatsApp or email once your order is dispatched.</p><h2>Bulky and Heavy Items</h2><p>Large items such as generators, welding machines and solar panels may require specialised transport; our team will confirm timing and any additional handling charge before dispatch.</p><h2>Collection</h2><p>You may also collect your order in person from {$addr} during opening hours. Please wait for confirmation that your order is ready before travelling.</p><h2>Tracking and Support</h2><p>For delivery updates, contact us on {$phone} or {$mail} with your order number.</p>",
+				'content' => "<h2>Delivery Coverage</h2><p>{$name} delivers countrywide across Kenya. We dispatch from our Nairobi shop.</p><h2>Delivery Times</h2><ul><li><strong>Nairobi:</strong> Same-day or next-day delivery for orders confirmed before 3:00pm on business days.</li><li><strong>Major towns:</strong> 1-3 business days via courier or parcel service.</li><li><strong>Remote areas:</strong> 2-5 business days, delivered to the nearest courier pick-up point where door delivery is unavailable.</li></ul><h2>Delivery Charges</h2><p>Delivery fees are calculated at checkout based on your location, order size and weight. Charges are shown clearly before you pay. Selected promotions may include free delivery.</p><h2>Order Processing</h2><p>Orders are processed on business days (Monday to Saturday, excluding public holidays). You will receive confirmation by phone, WhatsApp or email once your order is dispatched.</p><h2>Bulky and Heavy Items</h2><p>Large items such as generators, welding machines and solar panels may require specialised transport; our team will confirm timing and any additional handling charge before dispatch.</p><h2>Collection</h2><p>You may also collect your order in person from {$addr} during opening hours. Please wait for confirmation that your order is ready before travelling.</p><h2>Tracking and Support</h2><p>For delivery updates, contact us on {$phone} or {$mail} with your order number.</p>",
 			),
 			'return-refund-policy' => array(
 				'title'   => 'Return &amp; Refund Policy',
@@ -198,7 +198,7 @@ final class Content_Installer {
 			),
 			'faq' => array(
 				'title'   => 'Frequently Asked Questions',
-				'content' => "<h2>Ordering</h2><p><strong>How do I place an order?</strong> Browse or search for a product, add it to your cart and complete checkout. You can also order by calling or WhatsApp on {$phone}.</p><p><strong>Are your products genuine?</strong> Yes. We source only authentic products from authorised distributors, backed by manufacturer warranties.</p><h2>Payment</h2><p><strong>What payment methods do you accept?</strong> M-PESA, Visa, Mastercard and cash on delivery where available. See our Payment Methods page.</p><h2>Delivery</h2><p><strong>Do you deliver countrywide?</strong> Yes, we deliver across Kenya. Nairobi orders can be delivered same or next day. See our Shipping &amp; Delivery Policy.</p><p><strong>Can I collect my order?</strong> Yes, from {$addr} during opening hours once your order is confirmed ready.</p><h2>Returns &amp; Warranty</h2><p><strong>What if my item is faulty?</strong> Contact us within 7 days for a return, or make a warranty claim. See our Return &amp; Refund Policy and Warranty Policy.</p><h2>Support</h2><p><strong>How do I reach you?</strong> Call or WhatsApp {$phone}, email {$mail}, or visit our shop in Nairobi CBD, Monday to Saturday, 8:00am - 6:00pm.</p>",
+				'content' => "<h2>Ordering</h2><p><strong>How do I place an order?</strong> Browse or search for a product, add it to your cart and complete checkout. You can also order by calling or WhatsApp on {$phone}.</p><p><strong>Are your products genuine?</strong> Yes. We source only authentic products from authorised distributors, backed by manufacturer warranties.</p><h2>Payment</h2><p><strong>What payment methods do you accept?</strong> M-PESA, Visa, Mastercard and cash on delivery where available. See our Payment Methods page.</p><h2>Delivery</h2><p><strong>Do you deliver countrywide?</strong> Yes, we deliver across Kenya. Nairobi orders can be delivered same or next day. See our Shipping &amp; Delivery Policy.</p><p><strong>Can I collect my order?</strong> Yes, from {$addr} during opening hours once your order is confirmed ready.</p><h2>Returns &amp; Warranty</h2><p><strong>What if my item is faulty?</strong> Contact us within 7 days for a return, or make a warranty claim. See our Return &amp; Refund Policy and Warranty Policy.</p><h2>Support</h2><p><strong>How do I reach you?</strong> Call or WhatsApp {$phone}, email {$mail}, or visit our shop in Nairobi, Monday to Saturday, 8:00am - 6:00pm.</p>",
 			),
 			'track-order' => array(
 				'title'   => 'Track Order',

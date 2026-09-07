@@ -8,12 +8,12 @@
  * and honest product data. Each finding carries a severity and a concrete fix, and the
  * page links out to request a Merchant Center review once criticals are cleared.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Merchant_Inspector {
 
-	const SLUG = 'ricky-merchant-inspector';
+	const SLUG = 'toptech-merchant-inspector';
 
 	public function hooks(): void {
 		add_action( 'admin_menu', array( $this, 'menu' ), 90 );
@@ -33,8 +33,8 @@ final class Merchant_Inspector {
 		$cap    = current_user_can( 'manage_woocommerce' ) ? 'manage_woocommerce' : 'manage_options';
 		add_submenu_page(
 			$parent,
-			__( 'Merchant Compliance', 'ricky-tools' ),
-			__( 'Merchant Compliance', 'ricky-tools' ),
+			__( 'Merchant Compliance', 'toptech-machinery' ),
+			__( 'Merchant Compliance', 'toptech-machinery' ),
 			$cap,
 			self::SLUG,
 			array( $this, 'render' )
@@ -112,35 +112,35 @@ final class Merchant_Inspector {
 		$https = is_ssl() || 0 === strpos( home_url(), 'https://' );
 		$checks[] = $this->check(
 			'Trust & identity',
-			__( 'Secure site (HTTPS)', 'ricky-tools' ),
+			__( 'Secure site (HTTPS)', 'toptech-machinery' ),
 			$https ? 'pass' : 'critical',
-			$https ? __( 'The store loads over HTTPS.', 'ricky-tools' ) : __( 'The site is not served over HTTPS. Merchant Center requires a secure checkout.', 'ricky-tools' ),
-			__( 'Install an SSL certificate (free via your host / LiteSpeed) and set WordPress Address + Site Address to https:// under Settings > General.', 'ricky-tools' ),
+			$https ? __( 'The store loads over HTTPS.', 'toptech-machinery' ) : __( 'The site is not served over HTTPS. Merchant Center requires a secure checkout.', 'toptech-machinery' ),
+			__( 'Install an SSL certificate (free via your host / LiteSpeed) and set WordPress Address + Site Address to https:// under Settings > General.', 'toptech-machinery' ),
 			admin_url( 'options-general.php' ),
-			__( 'Open General settings', 'ricky-tools' )
+			__( 'Open General settings', 'toptech-machinery' )
 		);
 
 		$indexable = '1' === (string) get_option( 'blog_public', '1' );
 		$checks[] = $this->check(
 			'Trust & identity',
-			__( 'Search engines allowed to index', 'ricky-tools' ),
+			__( 'Search engines allowed to index', 'toptech-machinery' ),
 			$indexable ? 'pass' : 'critical',
-			$indexable ? __( 'The site is indexable.', 'ricky-tools' ) : __( '"Discourage search engines" is ON — this blocks Google and can fail Merchant review.', 'ricky-tools' ),
-			__( 'Settings > Reading: uncheck "Discourage search engines from indexing this site".', 'ricky-tools' ),
+			$indexable ? __( 'The site is indexable.', 'toptech-machinery' ) : __( '"Discourage search engines" is ON — this blocks Google and can fail Merchant review.', 'toptech-machinery' ),
+			__( 'Settings > Reading: uncheck "Discourage search engines from indexing this site".', 'toptech-machinery' ),
 			admin_url( 'options-reading.php' ),
-			__( 'Open Reading settings', 'ricky-tools' )
+			__( 'Open Reading settings', 'toptech-machinery' )
 		);
 
 		$name    = trim( (string) get_bloginfo( 'name' ) );
 		$name_ok = '' !== $name && 0 !== strcasecmp( $name, 'My Site' );
 		$checks[] = $this->check(
 			'Trust & identity',
-			__( 'Business name set', 'ricky-tools' ),
+			__( 'Business name set', 'toptech-machinery' ),
 			$name_ok ? 'pass' : 'warning',
-			$name_ok ? sprintf( __( 'Site title: %s', 'ricky-tools' ), $name ) : __( 'Site title is empty or a placeholder.', 'ricky-tools' ),
-			__( 'Settings > General: set the Site Title to your registered business name.', 'ricky-tools' ),
+			$name_ok ? sprintf( __( 'Site title: %s', 'toptech-machinery' ), $name ) : __( 'Site title is empty or a placeholder.', 'toptech-machinery' ),
+			__( 'Settings > General: set the Site Title to your registered business name.', 'toptech-machinery' ),
 			admin_url( 'options-general.php' ),
-			__( 'Open General settings', 'ricky-tools' )
+			__( 'Open General settings', 'toptech-machinery' )
 		);
 
 		$addr    = trim( (string) get_option( 'woocommerce_store_address' ) );
@@ -148,25 +148,25 @@ final class Merchant_Inspector {
 		$addr_ok = '' !== $addr && '' !== $city;
 		$checks[] = $this->check(
 			'Trust & identity',
-			__( 'Physical business address', 'ricky-tools' ),
+			__( 'Physical business address', 'toptech-machinery' ),
 			$addr_ok ? 'pass' : 'critical',
-			$addr_ok ? __( 'A store address is configured.', 'ricky-tools' ) : __( 'No store address set. A verifiable physical address is central to the Misrepresentation policy.', 'ricky-tools' ),
-			__( 'WooCommerce > Settings > General: complete the Store Address, and show it in the footer/Contact page.', 'ricky-tools' ),
+			$addr_ok ? __( 'A store address is configured.', 'toptech-machinery' ) : __( 'No store address set. A verifiable physical address is central to the Misrepresentation policy.', 'toptech-machinery' ),
+			__( 'WooCommerce > Settings > General: complete the Store Address, and show it in the footer/Contact page.', 'toptech-machinery' ),
 			$has_wc ? admin_url( 'admin.php?page=wc-settings' ) : $admin,
-			__( 'Open WooCommerce settings', 'ricky-tools' )
+			__( 'Open WooCommerce settings', 'toptech-machinery' )
 		);
 
-		$phone    = trim( (string) get_theme_mod( 'ricky_phone', '' ) );
-		$email    = trim( (string) get_theme_mod( 'ricky_email', '' ) );
+		$phone    = trim( (string) get_theme_mod( 'toptech_phone', '' ) );
+		$email    = trim( (string) get_theme_mod( 'toptech_email', '' ) );
 		$contact  = ( '' !== $phone ) || ( '' !== $email );
 		$checks[] = $this->check(
 			'Trust & identity',
-			__( 'Contact details visible (phone/email)', 'ricky-tools' ),
+			__( 'Contact details visible (phone/email)', 'toptech-machinery' ),
 			$contact ? 'pass' : 'warning',
-			$contact ? __( 'Contact phone/email are set and shown in the header/footer.', 'ricky-tools' ) : __( 'No contact phone or email configured.', 'ricky-tools' ),
-			__( 'Appearance > Customize > set the Ricky Tools phone and email so shoppers can reach a real business.', 'ricky-tools' ),
+			$contact ? __( 'Contact phone/email are set and shown in the header/footer.', 'toptech-machinery' ) : __( 'No contact phone or email configured.', 'toptech-machinery' ),
+			__( 'Appearance > Customize > set the TopTech Machinery phone and email so shoppers can reach a real business.', 'toptech-machinery' ),
 			admin_url( 'customize.php' ),
-			__( 'Open Customizer', 'ricky-tools' )
+			__( 'Open Customizer', 'toptech-machinery' )
 		);
 
 		/* ---- Required policies ---- */
@@ -174,57 +174,57 @@ final class Merchant_Inspector {
 		$privacy    = $privacy_id > 0 ? get_permalink( $privacy_id ) : $this->page_url( array( 'privacy-policy', 'privacy' ) );
 		$checks[] = $this->check(
 			'Required policies',
-			__( 'Privacy Policy page', 'ricky-tools' ),
+			__( 'Privacy Policy page', 'toptech-machinery' ),
 			$privacy ? 'pass' : 'critical',
-			$privacy ? __( 'A Privacy Policy is published.', 'ricky-tools' ) : __( 'No Privacy Policy page found.', 'ricky-tools' ),
-			__( 'Settings > Privacy: create/assign a Privacy Policy page, then link it in the footer.', 'ricky-tools' ),
+			$privacy ? __( 'A Privacy Policy is published.', 'toptech-machinery' ) : __( 'No Privacy Policy page found.', 'toptech-machinery' ),
+			__( 'Settings > Privacy: create/assign a Privacy Policy page, then link it in the footer.', 'toptech-machinery' ),
 			$privacy ? $privacy : admin_url( 'options-privacy.php' ),
-			$privacy ? __( 'View page', 'ricky-tools' ) : __( 'Create policy', 'ricky-tools' )
+			$privacy ? __( 'View page', 'toptech-machinery' ) : __( 'Create policy', 'toptech-machinery' )
 		);
 
 		$terms_id = function_exists( 'wc_terms_and_conditions_page_id' ) ? (int) wc_terms_and_conditions_page_id() : 0;
 		$terms    = $terms_id > 0 ? get_permalink( $terms_id ) : $this->page_url( array( 'terms', 'terms-and-conditions', 'terms-conditions' ) );
 		$checks[] = $this->check(
 			'Required policies',
-			__( 'Terms & Conditions page', 'ricky-tools' ),
+			__( 'Terms & Conditions page', 'toptech-machinery' ),
 			$terms ? 'pass' : 'critical',
-			$terms ? __( 'Terms & Conditions are published.', 'ricky-tools' ) : __( 'No Terms & Conditions page found.', 'ricky-tools' ),
-			__( 'Create a Terms & Conditions page and assign it under WooCommerce > Settings > Advanced.', 'ricky-tools' ),
+			$terms ? __( 'Terms & Conditions are published.', 'toptech-machinery' ) : __( 'No Terms & Conditions page found.', 'toptech-machinery' ),
+			__( 'Create a Terms & Conditions page and assign it under WooCommerce > Settings > Advanced.', 'toptech-machinery' ),
 			$terms ? $terms : admin_url( 'post-new.php?post_type=page' ),
-			$terms ? __( 'View page', 'ricky-tools' ) : __( 'Create page', 'ricky-tools' )
+			$terms ? __( 'View page', 'toptech-machinery' ) : __( 'Create page', 'toptech-machinery' )
 		);
 
 		$refund = $this->page_url( array( 'refund_returns', 'refund-returns', 'refund-policy', 'return-policy', 'returns', 'return-refund-policy', 'returns-refunds' ) );
 		$checks[] = $this->check(
 			'Required policies',
-			__( 'Return & Refund Policy page', 'ricky-tools' ),
+			__( 'Return & Refund Policy page', 'toptech-machinery' ),
 			$refund ? 'pass' : 'critical',
-			$refund ? __( 'A Return/Refund policy is published.', 'ricky-tools' ) : __( 'No Return/Refund policy found. Merchant Center requires clear returns terms.', 'ricky-tools' ),
-			__( 'Publish a Return & Refund Policy page (window, conditions, how to request) and link it in the footer.', 'ricky-tools' ),
+			$refund ? __( 'A Return/Refund policy is published.', 'toptech-machinery' ) : __( 'No Return/Refund policy found. Merchant Center requires clear returns terms.', 'toptech-machinery' ),
+			__( 'Publish a Return & Refund Policy page (window, conditions, how to request) and link it in the footer.', 'toptech-machinery' ),
 			$refund ? $refund : admin_url( 'post-new.php?post_type=page' ),
-			$refund ? __( 'View page', 'ricky-tools' ) : __( 'Create page', 'ricky-tools' )
+			$refund ? __( 'View page', 'toptech-machinery' ) : __( 'Create page', 'toptech-machinery' )
 		);
 
 		$shipping_pg = $this->page_url( array( 'shipping', 'delivery', 'shipping-policy', 'shipping-delivery-policy', 'shipping-delivery', 'delivery-policy' ) );
 		$checks[] = $this->check(
 			'Required policies',
-			__( 'Shipping & Delivery Policy page', 'ricky-tools' ),
+			__( 'Shipping & Delivery Policy page', 'toptech-machinery' ),
 			$shipping_pg ? 'pass' : 'critical',
-			$shipping_pg ? __( 'A Shipping/Delivery policy is published.', 'ricky-tools' ) : __( 'No Shipping/Delivery policy found.', 'ricky-tools' ),
-			__( 'Publish a Shipping & Delivery Policy (areas, timelines, costs) and link it in the footer.', 'ricky-tools' ),
+			$shipping_pg ? __( 'A Shipping/Delivery policy is published.', 'toptech-machinery' ) : __( 'No Shipping/Delivery policy found.', 'toptech-machinery' ),
+			__( 'Publish a Shipping & Delivery Policy (areas, timelines, costs) and link it in the footer.', 'toptech-machinery' ),
 			$shipping_pg ? $shipping_pg : admin_url( 'post-new.php?post_type=page' ),
-			$shipping_pg ? __( 'View page', 'ricky-tools' ) : __( 'Create page', 'ricky-tools' )
+			$shipping_pg ? __( 'View page', 'toptech-machinery' ) : __( 'Create page', 'toptech-machinery' )
 		);
 
 		$contact_pg = $this->page_url( array( 'contact', 'contact-us' ) );
 		$checks[] = $this->check(
 			'Required policies',
-			__( 'Contact Us page', 'ricky-tools' ),
+			__( 'Contact Us page', 'toptech-machinery' ),
 			$contact_pg ? 'pass' : 'warning',
-			$contact_pg ? __( 'A Contact page is published.', 'ricky-tools' ) : __( 'No dedicated Contact page found.', 'ricky-tools' ),
-			__( 'Publish a Contact Us page with address, phone, email and hours.', 'ricky-tools' ),
+			$contact_pg ? __( 'A Contact page is published.', 'toptech-machinery' ) : __( 'No dedicated Contact page found.', 'toptech-machinery' ),
+			__( 'Publish a Contact Us page with address, phone, email and hours.', 'toptech-machinery' ),
 			$contact_pg ? $contact_pg : admin_url( 'post-new.php?post_type=page' ),
-			$contact_pg ? __( 'View page', 'ricky-tools' ) : __( 'Create page', 'ricky-tools' )
+			$contact_pg ? __( 'View page', 'toptech-machinery' ) : __( 'Create page', 'toptech-machinery' )
 		);
 
 		/* ---- Store function ---- */
@@ -238,12 +238,12 @@ final class Merchant_Inspector {
 		}
 		$checks[] = $this->check(
 			'Store function',
-			__( 'WooCommerce core pages set', 'ricky-tools' ),
+			__( 'WooCommerce core pages set', 'toptech-machinery' ),
 			empty( $missing_pages ) ? 'pass' : 'critical',
-			empty( $missing_pages ) ? __( 'Shop, Cart, Checkout and My Account are configured.', 'ricky-tools' ) : sprintf( __( 'Missing: %s', 'ricky-tools' ), implode( ', ', $missing_pages ) ),
-			__( 'WooCommerce > Settings > Advanced: assign the Cart, Checkout and My Account pages.', 'ricky-tools' ),
+			empty( $missing_pages ) ? __( 'Shop, Cart, Checkout and My Account are configured.', 'toptech-machinery' ) : sprintf( __( 'Missing: %s', 'toptech-machinery' ), implode( ', ', $missing_pages ) ),
+			__( 'WooCommerce > Settings > Advanced: assign the Cart, Checkout and My Account pages.', 'toptech-machinery' ),
 			$has_wc ? admin_url( 'admin.php?page=wc-settings&tab=advanced' ) : $admin,
-			__( 'Open Advanced settings', 'ricky-tools' )
+			__( 'Open Advanced settings', 'toptech-machinery' )
 		);
 
 		$enabled_gw = 0;
@@ -256,12 +256,12 @@ final class Merchant_Inspector {
 		}
 		$checks[] = $this->check(
 			'Store function',
-			__( 'Payment method enabled', 'ricky-tools' ),
+			__( 'Payment method enabled', 'toptech-machinery' ),
 			$enabled_gw > 0 ? 'pass' : 'critical',
-			$enabled_gw > 0 ? sprintf( __( '%d payment method(s) enabled.', 'ricky-tools' ), $enabled_gw ) : __( 'No payment method is enabled — shoppers cannot pay.', 'ricky-tools' ),
-			__( 'WooCommerce > Settings > Payments: enable M-PESA / card / cash on delivery.', 'ricky-tools' ),
+			$enabled_gw > 0 ? sprintf( __( '%d payment method(s) enabled.', 'toptech-machinery' ), $enabled_gw ) : __( 'No payment method is enabled — shoppers cannot pay.', 'toptech-machinery' ),
+			__( 'WooCommerce > Settings > Payments: enable M-PESA / card / cash on delivery.', 'toptech-machinery' ),
 			$has_wc ? admin_url( 'admin.php?page=wc-settings&tab=checkout' ) : $admin,
-			__( 'Open Payments', 'ricky-tools' )
+			__( 'Open Payments', 'toptech-machinery' )
 		);
 
 		$has_shipping = false;
@@ -281,23 +281,23 @@ final class Merchant_Inspector {
 		}
 		$checks[] = $this->check(
 			'Store function',
-			__( 'Shipping configured', 'ricky-tools' ),
+			__( 'Shipping configured', 'toptech-machinery' ),
 			$has_shipping ? 'pass' : 'warning',
-			$has_shipping ? __( 'At least one shipping method exists.', 'ricky-tools' ) : __( 'No shipping method found. Add rates so delivery cost is transparent.', 'ricky-tools' ),
-			__( 'WooCommerce > Settings > Shipping: add a zone (Kenya) with flat rate / free shipping.', 'ricky-tools' ),
+			$has_shipping ? __( 'At least one shipping method exists.', 'toptech-machinery' ) : __( 'No shipping method found. Add rates so delivery cost is transparent.', 'toptech-machinery' ),
+			__( 'WooCommerce > Settings > Shipping: add a zone (Kenya) with flat rate / free shipping.', 'toptech-machinery' ),
 			$has_wc ? admin_url( 'admin.php?page=wc-settings&tab=shipping' ) : $admin,
-			__( 'Open Shipping', 'ricky-tools' )
+			__( 'Open Shipping', 'toptech-machinery' )
 		);
 
 		$currency = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : '';
 		$checks[] = $this->check(
 			'Store function',
-			__( 'Currency set', 'ricky-tools' ),
+			__( 'Currency set', 'toptech-machinery' ),
 			'' !== $currency ? 'pass' : 'warning',
-			'' !== $currency ? sprintf( __( 'Store currency: %s', 'ricky-tools' ), $currency ) : __( 'No currency configured.', 'ricky-tools' ),
-			__( 'WooCommerce > Settings > General: set the currency (KES) and ensure prices match your feed.', 'ricky-tools' ),
+			'' !== $currency ? sprintf( __( 'Store currency: %s', 'toptech-machinery' ), $currency ) : __( 'No currency configured.', 'toptech-machinery' ),
+			__( 'WooCommerce > Settings > General: set the currency (KES) and ensure prices match your feed.', 'toptech-machinery' ),
 			$has_wc ? admin_url( 'admin.php?page=wc-settings' ) : $admin,
-			__( 'Open settings', 'ricky-tools' )
+			__( 'Open settings', 'toptech-machinery' )
 		);
 
 		/* ---- Product data quality ---- */
@@ -305,24 +305,24 @@ final class Merchant_Inspector {
 		$total  = $counts && isset( $counts->publish ) ? (int) $counts->publish : 0;
 		$checks[] = $this->check(
 			'Product data',
-			__( 'Products published', 'ricky-tools' ),
+			__( 'Products published', 'toptech-machinery' ),
 			$total > 0 ? 'pass' : 'critical',
-			sprintf( __( '%d published product(s).', 'ricky-tools' ), $total ),
-			__( 'Publish real, in-stock products with accurate details before requesting review.', 'ricky-tools' ),
+			sprintf( __( '%d published product(s).', 'toptech-machinery' ), $total ),
+			__( 'Publish real, in-stock products with accurate details before requesting review.', 'toptech-machinery' ),
 			admin_url( 'edit.php?post_type=product' ),
-			__( 'Open Products', 'ricky-tools' )
+			__( 'Open Products', 'toptech-machinery' )
 		);
 
 		if ( $total > 0 ) {
 			$no_image = $this->count_products_meta( array( array( 'key' => '_thumbnail_id', 'compare' => 'NOT EXISTS' ) ) );
 			$checks[] = $this->check(
 				'Product data',
-				__( 'Every product has a main image', 'ricky-tools' ),
+				__( 'Every product has a main image', 'toptech-machinery' ),
 				$no_image > 0 ? 'critical' : 'pass',
-				$no_image > 0 ? sprintf( __( '%d product(s) have no main image.', 'ricky-tools' ), $no_image ) : __( 'All products have images.', 'ricky-tools' ),
-				__( 'Add a clear main image to every product. Missing/placeholder images are a common Misrepresentation flag.', 'ricky-tools' ),
+				$no_image > 0 ? sprintf( __( '%d product(s) have no main image.', 'toptech-machinery' ), $no_image ) : __( 'All products have images.', 'toptech-machinery' ),
+				__( 'Add a clear main image to every product. Missing/placeholder images are a common Misrepresentation flag.', 'toptech-machinery' ),
 				admin_url( 'edit.php?post_type=product' ),
-				__( 'Open Products', 'ricky-tools' )
+				__( 'Open Products', 'toptech-machinery' )
 			);
 
 			$no_price = $this->count_products_meta(
@@ -334,12 +334,12 @@ final class Merchant_Inspector {
 			);
 			$checks[] = $this->check(
 				'Product data',
-				__( 'Every product has a price', 'ricky-tools' ),
+				__( 'Every product has a price', 'toptech-machinery' ),
 				$no_price > 0 ? 'critical' : 'pass',
-				$no_price > 0 ? sprintf( __( '%d product(s) have no price.', 'ricky-tools' ), $no_price ) : __( 'All products are priced.', 'ricky-tools' ),
-				__( 'Set a price on every product. The price on the page must match checkout and any Merchant feed.', 'ricky-tools' ),
+				$no_price > 0 ? sprintf( __( '%d product(s) have no price.', 'toptech-machinery' ), $no_price ) : __( 'All products are priced.', 'toptech-machinery' ),
+				__( 'Set a price on every product. The price on the page must match checkout and any Merchant feed.', 'toptech-machinery' ),
 				admin_url( 'edit.php?post_type=product' ),
-				__( 'Open Products', 'ricky-tools' )
+				__( 'Open Products', 'toptech-machinery' )
 			);
 
 			$no_sku = $this->count_products_meta(
@@ -351,12 +351,12 @@ final class Merchant_Inspector {
 			);
 			$checks[] = $this->check(
 				'Product data',
-				__( 'Products have a SKU', 'ricky-tools' ),
+				__( 'Products have a SKU', 'toptech-machinery' ),
 				$no_sku > 0 ? 'warning' : 'pass',
-				$no_sku > 0 ? sprintf( __( '%d product(s) have no SKU.', 'ricky-tools' ), $no_sku ) : __( 'All products have a SKU.', 'ricky-tools' ),
-				__( 'Add SKUs — they help Merchant feed matching and identity.', 'ricky-tools' ),
+				$no_sku > 0 ? sprintf( __( '%d product(s) have no SKU.', 'toptech-machinery' ), $no_sku ) : __( 'All products have a SKU.', 'toptech-machinery' ),
+				__( 'Add SKUs — they help Merchant feed matching and identity.', 'toptech-machinery' ),
 				admin_url( 'edit.php?post_type=product' ),
-				__( 'Open Products', 'ricky-tools' )
+				__( 'Open Products', 'toptech-machinery' )
 			);
 
 			$brand_tax = $this->brand_taxonomy();
@@ -375,12 +375,12 @@ final class Merchant_Inspector {
 				$no_brand = (int) $qb->found_posts;
 				$checks[] = $this->check(
 					'Product data',
-					__( 'Products assigned a brand', 'ricky-tools' ),
+					__( 'Products assigned a brand', 'toptech-machinery' ),
 					$no_brand > 0 ? 'warning' : 'pass',
-					$no_brand > 0 ? sprintf( __( '%d product(s) have no brand.', 'ricky-tools' ), $no_brand ) : __( 'All products have a brand.', 'ricky-tools' ),
-					__( 'Assign the correct brand to each product. Accurate brand data reduces misrepresentation risk.', 'ricky-tools' ),
+					$no_brand > 0 ? sprintf( __( '%d product(s) have no brand.', 'toptech-machinery' ), $no_brand ) : __( 'All products have a brand.', 'toptech-machinery' ),
+					__( 'Assign the correct brand to each product. Accurate brand data reduces misrepresentation risk.', 'toptech-machinery' ),
 					admin_url( 'edit.php?post_type=product' ),
-					__( 'Open Products', 'ricky-tools' )
+					__( 'Open Products', 'toptech-machinery' )
 				);
 			}
 		}
@@ -411,21 +411,21 @@ final class Merchant_Inspector {
 		$ready = 0 === $crit;
 		?>
 		<div class="wrap rk-mci">
-			<h1><?php esc_html_e( 'Merchant Compliance Inspector', 'ricky-tools' ); ?></h1>
-			<p class="rk-mci__intro"><?php esc_html_e( 'Audits your store against Google Merchant Center policies, with emphasis on Misrepresentation. Fix the criticals first, then request a Merchant Center review. Refresh this page to re-scan.', 'ricky-tools' ); ?></p>
+			<h1><?php esc_html_e( 'Merchant Compliance Inspector', 'toptech-machinery' ); ?></h1>
+			<p class="rk-mci__intro"><?php esc_html_e( 'Audits your store against Google Merchant Center policies, with emphasis on Misrepresentation. Fix the criticals first, then request a Merchant Center review. Refresh this page to re-scan.', 'toptech-machinery' ); ?></p>
 
 			<div class="rk-mci__summary">
-				<span class="rk-mci__pill rk-mci__pill--critical"><?php echo esc_html( sprintf( _n( '%d critical', '%d critical', $crit, 'ricky-tools' ), $crit ) ); ?></span>
-				<span class="rk-mci__pill rk-mci__pill--warning"><?php echo esc_html( sprintf( _n( '%d warning', '%d warnings', $warn, 'ricky-tools' ), $warn ) ); ?></span>
-				<span class="rk-mci__pill rk-mci__pill--pass"><?php echo esc_html( sprintf( _n( '%d passed', '%d passed', $pass, 'ricky-tools' ), $pass ) ); ?></span>
+				<span class="rk-mci__pill rk-mci__pill--critical"><?php echo esc_html( sprintf( _n( '%d critical', '%d critical', $crit, 'toptech-machinery' ), $crit ) ); ?></span>
+				<span class="rk-mci__pill rk-mci__pill--warning"><?php echo esc_html( sprintf( _n( '%d warning', '%d warnings', $warn, 'toptech-machinery' ), $warn ) ); ?></span>
+				<span class="rk-mci__pill rk-mci__pill--pass"><?php echo esc_html( sprintf( _n( '%d passed', '%d passed', $pass, 'toptech-machinery' ), $pass ) ); ?></span>
 			</div>
 
 			<div class="rk-mci__review <?php echo $ready ? 'is-ready' : 'is-blocked'; ?>">
 				<?php if ( $ready ) : ?>
-					<p><strong><?php esc_html_e( 'No criticals remaining.', 'ricky-tools' ); ?></strong> <?php esc_html_e( 'You can request a Merchant Center review: open your Merchant Center account, go to the Misrepresentation issue, confirm the fixes, and click Request review.', 'ricky-tools' ); ?></p>
-					<a class="button button-primary" href="https://merchants.google.com/" target="_blank" rel="noopener"><?php esc_html_e( 'Open Google Merchant Center', 'ricky-tools' ); ?></a>
+					<p><strong><?php esc_html_e( 'No criticals remaining.', 'toptech-machinery' ); ?></strong> <?php esc_html_e( 'You can request a Merchant Center review: open your Merchant Center account, go to the Misrepresentation issue, confirm the fixes, and click Request review.', 'toptech-machinery' ); ?></p>
+					<a class="button button-primary" href="https://merchants.google.com/" target="_blank" rel="noopener"><?php esc_html_e( 'Open Google Merchant Center', 'toptech-machinery' ); ?></a>
 				<?php else : ?>
-					<p><strong><?php esc_html_e( 'Resolve the critical items below before requesting a review.', 'ricky-tools' ); ?></strong> <?php esc_html_e( 'Requesting a review with unresolved criticals usually results in another rejection.', 'ricky-tools' ); ?></p>
+					<p><strong><?php esc_html_e( 'Resolve the critical items below before requesting a review.', 'toptech-machinery' ); ?></strong> <?php esc_html_e( 'Requesting a review with unresolved criticals usually results in another rejection.', 'toptech-machinery' ); ?></p>
 				<?php endif; ?>
 			</div>
 
@@ -449,7 +449,7 @@ final class Merchant_Inspector {
 							</td>
 							<td class="rk-mci__action">
 								<?php if ( '' !== $row['link'] ) : ?>
-									<a class="button button-small" href="<?php echo esc_url( $row['link'] ); ?>"><?php echo esc_html( '' !== $row['link_label'] ? $row['link_label'] : __( 'Open', 'ricky-tools' ) ); ?></a>
+									<a class="button button-small" href="<?php echo esc_url( $row['link'] ); ?>"><?php echo esc_html( '' !== $row['link_label'] ? $row['link_label'] : __( 'Open', 'toptech-machinery' ) ); ?></a>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -458,7 +458,7 @@ final class Merchant_Inspector {
 				</table>
 			<?php endforeach; ?>
 
-			<p class="rk-mci__foot"><?php esc_html_e( 'This inspector covers the store-side signals Merchant Center weighs most under Misrepresentation. It cannot see your Merchant Center feed diagnostics, so also resolve any product-level issues shown there.', 'ricky-tools' ); ?></p>
+			<p class="rk-mci__foot"><?php esc_html_e( 'This inspector covers the store-side signals Merchant Center weighs most under Misrepresentation. It cannot see your Merchant Center feed diagnostics, so also resolve any product-level issues shown there.', 'toptech-machinery' ); ?></p>
 		</div>
 		<style>
 			.rk-mci__intro{max-width:820px;color:#50575e}

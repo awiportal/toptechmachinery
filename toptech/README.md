@@ -1,7 +1,7 @@
-# Ricky Tools - Premium WooCommerce Theme (v1.0.0)
+# TopTech Machinery - Premium WooCommerce Theme (v1.0.0)
 
 A fast, secure, conversion-focused WooCommerce theme for power tools, solar, and hardware
-retail in Kenya. Brand colours: **Yellow `#FDB913`** + **Dark Blue `#0B1E3F`**.
+retail in Kenya. Brand colours: **Blue `#005EB8`** + **Dark Navy `#0B1E3F`**.
 
 Built for **WordPress 6.5+**, **WooCommerce 9+**, **PHP 8.1+** (8.3 ready).
 
@@ -9,7 +9,7 @@ Built for **WordPress 6.5+**, **WooCommerce 9+**, **PHP 8.1+** (8.3 ready).
 
 ## What's inside (v1.0.0 foundation)
 
-- **Object-oriented, namespaced** codebase (`RickyTools\`) with an autoloader — no global soup.
+- **Object-oriented, namespaced** codebase (`ToptechMachinery\`) with an autoloader — no global soup.
 - **Header**: top contact bar (phone/WhatsApp/email/hours), logo, intelligent AJAX search
   (products + categories + brands + SKU), account/wishlist/cart actions, **sticky on scroll**.
 - **Homepage** (`front-page.php`): hero slider (touch + keyboard + autoplay) with vertical
@@ -41,22 +41,22 @@ Built for **WordPress 6.5+**, **WooCommerce 9+**, **PHP 8.1+** (8.3 ready).
 
 ## Installation
 
-1. In WordPress: **Appearance → Themes → Add New → Upload Theme** → upload `ricky-tools.zip` → **Activate**.
+1. In WordPress: **Appearance → Themes → Add New → Upload Theme** → upload `toptech-machinery.zip` → **Activate**.
 2. On activation the theme prompts you to install the required plugins (TGMPA). Install at least
    **WooCommerce** and **Perfect Brands for WooCommerce**, then the recommended ones.
    > Before shipping/using: place the TGMPA library at
    > `inc/tgmpa/class-tgm-plugin-activation.php` (download from https://tgmpluginactivation.com/).
 3. On activation, all legal/info **Pages and menus are created automatically**. Edit any of them
    under **Pages** — the content is real, not placeholder.
-4. Upload your logo at **Appearance → Customize → Site Identity** (use the supplied `RICKY-LOGO.webp`).
-5. Set brand colours + contact details under **Customize → Ricky Tools**.
+4. Upload your logo at **Appearance → Customize → Site Identity** (use the supplied `TOPTECH-LOGO.webp`).
+5. Set brand colours + contact details under **Customize → TopTech Machinery**.
 6. Import your products (see `IMPORT-PRODUCTS.md`).
 7. Set **Settings → Reading → Homepage displays → A static page** and pick a page, or leave the
    default — `front-page.php` renders the homepage automatically.
 
 ## Child theme
 
-Use `ricky-tools-child/` for any custom code so updates never overwrite your changes. Zip that
+Use `toptech-machinery-child/` for any custom code so updates never overwrite your changes. Zip that
 folder separately and install it the same way, then activate the child.
 
 ## Requirements
@@ -66,8 +66,8 @@ folder separately and install it the same way, then activate the child.
 
 ## Support / brand details baked in
 
-- Phone / WhatsApp: **0793 965654**  ·  Email: **info@rickytools.com**
-- Address: **Tusky Magic Business Centre, Junction of Mfangano Lane and Ronald Ngara Street, Nairobi CBD**
+- Phone / WhatsApp: **0719 261277**  ·  Email: **info@toptechmachinery.co.ke**
+- Address: **Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya**
 
 ## Roadmap (phases still to build)
 

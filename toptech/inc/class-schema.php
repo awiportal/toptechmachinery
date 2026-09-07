@@ -4,12 +4,12 @@
  * plus meta description and Open Graph / Twitter cards. Output is suppressed when a
  * dedicated SEO plugin (Yoast, Rank Math, SEOPress, AIOSEO) is active, to avoid duplicates.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -96,7 +96,7 @@ final class Schema {
 			}
 		} elseif ( is_search() ) {
 			/* translators: %s: search query. */
-			$d = sprintf( __( 'Search results for "%s"', 'ricky-tools' ), get_search_query() );
+			$d = sprintf( __( 'Search results for "%s"', 'toptech-machinery' ), get_search_query() );
 		}
 		$d = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( (string) $d ) ) );
 		if ( '' === $d ) {
@@ -169,11 +169,11 @@ final class Schema {
 			'@type'     => array( 'Organization', 'Store' ),
 			'name'      => get_bloginfo( 'name' ),
 			'url'       => home_url( '/' ),
-			'email'     => get_theme_mod( 'ricky_email', 'info@rickytools.com' ),
-			'telephone' => get_theme_mod( 'ricky_phone', '0793 965654' ),
+			'email'     => get_theme_mod( 'toptech_email', 'info@toptechmachinery.co.ke' ),
+			'telephone' => get_theme_mod( 'toptech_phone', '0719 261277' ),
 			'address'   => array(
 				'@type'           => 'PostalAddress',
-				'streetAddress'   => 'Junction of Mfangano Lane and Ronald Ngara Street',
+				'streetAddress'   => 'Royal Palms Mall, Shop No. BG 55',
 				'addressLocality' => 'Nairobi',
 				'addressRegion'   => 'Nairobi',
 				'addressCountry'  => 'KE',
@@ -225,9 +225,9 @@ final class Schema {
 		$items  = array();
 		$has_wc = function_exists( 'wc_get_page_permalink' );
 		if ( function_exists( 'is_product' ) && is_product() ) {
-			$items[] = array( home_url( '/' ), __( 'Home', 'ricky-tools' ) );
+			$items[] = array( home_url( '/' ), __( 'Home', 'toptech-machinery' ) );
 			if ( $has_wc ) {
-				$items[] = array( wc_get_page_permalink( 'shop' ), __( 'Shop', 'ricky-tools' ) );
+				$items[] = array( wc_get_page_permalink( 'shop' ), __( 'Shop', 'toptech-machinery' ) );
 			}
 			$terms = get_the_terms( get_queried_object_id(), 'product_cat' );
 			if ( $terms && ! is_wp_error( $terms ) ) {
@@ -239,9 +239,9 @@ final class Schema {
 			}
 			$items[] = array( get_permalink(), get_the_title() );
 		} elseif ( function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() ) {
-			$items[] = array( home_url( '/' ), __( 'Home', 'ricky-tools' ) );
+			$items[] = array( home_url( '/' ), __( 'Home', 'toptech-machinery' ) );
 			if ( $has_wc ) {
-				$items[] = array( wc_get_page_permalink( 'shop' ), __( 'Shop', 'ricky-tools' ) );
+				$items[] = array( wc_get_page_permalink( 'shop' ), __( 'Shop', 'toptech-machinery' ) );
 			}
 			$obj = get_queried_object();
 			if ( $obj instanceof \WP_Term ) {

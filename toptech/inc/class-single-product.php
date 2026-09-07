@@ -5,12 +5,12 @@
  * Adds: delivery estimate, trust badges, secure-payment icons, Specifications
  * and FAQ tabs, a sticky add-to-cart bar, and a Recently Viewed section.
  *
- * @package RickyTools
+ * @package ToptechMachinery
  */
 
 declare( strict_types = 1 );
 
-namespace RickyTools;
+namespace ToptechMachinery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -47,24 +47,24 @@ final class Single_Product {
 		if ( ! $product instanceof \WC_Product ) {
 			return;
 		}
-		$phone = esc_html( get_theme_mod( 'ricky_phone', '0793 965654' ) );
+		$phone = esc_html( get_theme_mod( 'toptech_phone', '0719 261277' ) );
 
 		echo '<div class="rk-pdp-extra">';
 
 		// Delivery estimate.
 		echo '<div class="rk-pdp-delivery">';
 		echo $this->icon( '<rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle>' ); // phpcs:ignore
-		echo '<div><strong>' . esc_html__( 'Fast delivery across Kenya.', 'ricky-tools' ) . '</strong><br>';
-		echo '<span>' . esc_html__( 'Nairobi: same/next-day. Countrywide: 1-3 business days. Order by phone/WhatsApp:', 'ricky-tools' ) . ' ' . $phone . '</span></div>';
+		echo '<div><strong>' . esc_html__( 'Fast delivery across Kenya.', 'toptech-machinery' ) . '</strong><br>';
+		echo '<span>' . esc_html__( 'Nairobi: same/next-day. Countrywide: 1-3 business days. Order by phone/WhatsApp:', 'toptech-machinery' ) . ' ' . $phone . '</span></div>';
 		echo '</div>';
 
 		// Trust badges.
 		echo '<ul class="rk-trust">';
 		$badges = array(
-			array( '<path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"></path><path d="M9 12l2 2 4-4"></path>', __( '100% Genuine Products', 'ricky-tools' ) ),
-			array( '<path d="M20 6L9 17l-5-5"></path>', __( 'Warranty Included', 'ricky-tools' ) ),
-			array( '<rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>', __( 'Secure Checkout', 'ricky-tools' ) ),
-			array( '<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path><path d="M12 7v5l3 2"></path>', __( 'Responsive Support', 'ricky-tools' ) ),
+			array( '<path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"></path><path d="M9 12l2 2 4-4"></path>', __( '100% Genuine Products', 'toptech-machinery' ) ),
+			array( '<path d="M20 6L9 17l-5-5"></path>', __( 'Warranty Included', 'toptech-machinery' ) ),
+			array( '<rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>', __( 'Secure Checkout', 'toptech-machinery' ) ),
+			array( '<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path><path d="M12 7v5l3 2"></path>', __( 'Responsive Support', 'toptech-machinery' ) ),
 		);
 		foreach ( $badges as $b ) {
 			echo '<li>' . $this->icon( $b[0] ) . '<span>' . esc_html( $b[1] ) . '</span></li>'; // phpcs:ignore
@@ -72,7 +72,7 @@ final class Single_Product {
 		echo '</ul>';
 
 		// Payment methods.
-		echo '<div class="rk-pdp-pay"><span class="rk-pdp-pay__label">' . esc_html__( 'We accept:', 'ricky-tools' ) . '</span>';
+		echo '<div class="rk-pdp-pay"><span class="rk-pdp-pay__label">' . esc_html__( 'We accept:', 'toptech-machinery' ) . '</span>';
 		foreach ( array( 'M-PESA', 'Visa', 'Mastercard', 'Cash on Delivery' ) as $pay ) {
 			echo '<span class="rk-pay-chip">' . esc_html( $pay ) . '</span>';
 		}
@@ -89,7 +89,7 @@ final class Single_Product {
 	public function tabs( array $tabs ): array {
 		// Rename the stock "additional information" tab to Specifications.
 		if ( isset( $tabs['additional_information'] ) ) {
-			$tabs['additional_information']['title']    = __( 'Specifications', 'ricky-tools' );
+			$tabs['additional_information']['title']    = __( 'Specifications', 'toptech-machinery' );
 			$tabs['additional_information']['priority'] = 20;
 		}
 		if ( isset( $tabs['description'] ) ) {
@@ -98,8 +98,8 @@ final class Single_Product {
 		if ( isset( $tabs['reviews'] ) ) {
 			$tabs['reviews']['priority'] = 40;
 		}
-		$tabs['ricky_faq'] = array(
-			'title'    => __( 'FAQ', 'ricky-tools' ),
+		$tabs['toptech_faq'] = array(
+			'title'    => __( 'FAQ', 'toptech-machinery' ),
 			'priority' => 30,
 			'callback' => array( $this, 'faq_tab' ),
 		);
@@ -110,13 +110,13 @@ final class Single_Product {
 	 * FAQ tab content (delivery / payment / returns / warranty).
 	 */
 	public function faq_tab(): void {
-		$phone = esc_html( get_theme_mod( 'ricky_phone', '0793 965654' ) );
+		$phone = esc_html( get_theme_mod( 'toptech_phone', '0719 261277' ) );
 		$faqs  = array(
-			array( __( 'How soon can I get this delivered?', 'ricky-tools' ), __( 'Nairobi orders are typically delivered same or next business day. Other towns take 1-3 business days. Confirm timing on checkout or by calling us.', 'ricky-tools' ) ),
-			array( __( 'How do I pay?', 'ricky-tools' ), __( 'We accept M-PESA, Visa, Mastercard and cash on delivery where available. All online payments are processed securely.', 'ricky-tools' ) ),
-			array( __( 'Is this product genuine and covered by warranty?', 'ricky-tools' ), __( 'Yes. We stock only genuine products from authorised suppliers, backed by the manufacturer warranty where applicable.', 'ricky-tools' ) ),
-			array( __( 'Can I return it if there is a problem?', 'ricky-tools' ), __( 'Faulty or incorrect items can be returned within 7 days. See our Return & Refund Policy for details.', 'ricky-tools' ) ),
-			array( __( 'How do I get help before buying?', 'ricky-tools' ), __( 'Call or WhatsApp us and our team will help you choose the right tool for the job.', 'ricky-tools' ) . ' ' . $phone ),
+			array( __( 'How soon can I get this delivered?', 'toptech-machinery' ), __( 'Nairobi orders are typically delivered same or next business day. Other towns take 1-3 business days. Confirm timing on checkout or by calling us.', 'toptech-machinery' ) ),
+			array( __( 'How do I pay?', 'toptech-machinery' ), __( 'We accept M-PESA, Visa, Mastercard and cash on delivery where available. All online payments are processed securely.', 'toptech-machinery' ) ),
+			array( __( 'Is this product genuine and covered by warranty?', 'toptech-machinery' ), __( 'Yes. We stock only genuine products from authorised suppliers, backed by the manufacturer warranty where applicable.', 'toptech-machinery' ) ),
+			array( __( 'Can I return it if there is a problem?', 'toptech-machinery' ), __( 'Faulty or incorrect items can be returned within 7 days. See our Return & Refund Policy for details.', 'toptech-machinery' ) ),
+			array( __( 'How do I get help before buying?', 'toptech-machinery' ), __( 'Call or WhatsApp us and our team will help you choose the right tool for the job.', 'toptech-machinery' ) . ' ' . $phone ),
 		);
 		echo '<div class="rk-faq">';
 		foreach ( $faqs as $f ) {
@@ -137,17 +137,17 @@ final class Single_Product {
 		$ids = array_values( array_diff( $ids, array( $id ) ) );
 		array_unshift( $ids, $id );
 		$ids = array_slice( array_unique( $ids ), 0, 12 );
-		wc_setcookie( 'ricky_recently_viewed', implode( ',', $ids ) );
+		wc_setcookie( 'toptech_recently_viewed', implode( ',', $ids ) );
 	}
 
 	/**
 	 * @return int[] Recently viewed product IDs from cookie.
 	 */
 	private function recent_ids(): array {
-		if ( empty( $_COOKIE['ricky_recently_viewed'] ) ) {
+		if ( empty( $_COOKIE['toptech_recently_viewed'] ) ) {
 			return array();
 		}
-		$raw = sanitize_text_field( wp_unslash( $_COOKIE['ricky_recently_viewed'] ) );
+		$raw = sanitize_text_field( wp_unslash( $_COOKIE['toptech_recently_viewed'] ) );
 		return array_filter( array_map( 'absint', explode( ',', $raw ) ) );
 	}
 
@@ -174,7 +174,7 @@ final class Single_Product {
 			wp_reset_postdata();
 			return;
 		}
-		echo '<section class="rk-recent"><div class="rk-section__head"><h2>' . esc_html__( 'Recently Viewed', 'ricky-tools' ) . '</h2></div><ul class="products rk-products">';
+		echo '<section class="rk-recent"><div class="rk-section__head"><h2>' . esc_html__( 'Recently Viewed', 'toptech-machinery' ) . '</h2></div><ul class="products rk-products">';
 		while ( $q->have_posts() ) {
 			$q->the_post();
 			wc_get_template_part( 'content', 'product' );
@@ -209,9 +209,9 @@ final class Single_Product {
 				<div class="rk-sticky-atc__title"><?php echo esc_html( $product->get_name() ); ?></div>
 				<div class="rk-sticky-atc__price"><?php echo $product->get_price_html(); // phpcs:ignore ?></div>
 				<?php if ( $simple ) : ?>
-					<button type="button" class="rk-btn rk-btn--primary" data-ricky-add="<?php echo esc_attr( $product->get_id() ); ?>"><?php esc_html_e( 'Add to Cart', 'ricky-tools' ); ?></button>
+					<button type="button" class="rk-btn rk-btn--primary" data-toptech-add="<?php echo esc_attr( $product->get_id() ); ?>"><?php esc_html_e( 'Add to Cart', 'toptech-machinery' ); ?></button>
 				<?php else : ?>
-					<a href="#" class="rk-btn rk-btn--primary rk-sticky-atc__jump"><?php esc_html_e( 'View Options', 'ricky-tools' ); ?></a>
+					<a href="#" class="rk-btn rk-btn--primary rk-sticky-atc__jump"><?php esc_html_e( 'View Options', 'toptech-machinery' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
