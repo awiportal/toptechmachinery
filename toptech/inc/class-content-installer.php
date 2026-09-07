@@ -21,11 +21,13 @@ final class Content_Installer {
 
 	private const FLAG = 'toptech_content_installed_v1';
 	private const MENU_FLAG = 'toptech_menus_v2';
+	private const CAT_IMG_FLAG = 'toptech_cat_images_v1';
 
 	public function hooks(): void {
 		add_action( 'admin_init', array( $this, 'install' ) );
 		add_action( 'admin_init', array( $this, 'ensure_front_page' ) );
 		add_action( 'admin_init', array( $this, 'sync_menus' ) );
+		add_action( 'admin_init', array( $this, 'sync_category_images' ) );
 	}
 
 	/**
@@ -297,5 +299,92 @@ final class Content_Installer {
 				'content' => "<h2>Track Your Order</h2><p>To check the status of your order, please have your order number ready and contact our support team on {$phone} (call or WhatsApp) or email {$mail}. We will confirm dispatch and expected delivery time.</p><p>If your WooCommerce order-tracking plugin is active, the tracking form will appear below.</p>[woocommerce_order_tracking]",
 			),
 		);
+	}
+
+	/**
+	 * Populate product category thumbnails from images bundled with the theme.
+	 * Runs once (own flag). For each category with no saved thumbnail it looks
+	 * for assets/img/categories/{slug}.jpg (matched on the term slug or the
+	 * sanitized term name), sideloads it into the media library and stores the
+	 * attachment id as that category thumbnail.
+	 */
+	public function sync_category_images(): void {
+		if ( get_option( self::CAT_IMG_FLAG ) ) {
+			return;
+		}
+		if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
+			return;
+		}
+		if ( taxonomy_exists( 'product_cat' ) === false ) {
+			return; // WooCommerce not ready yet; retry on a later admin load.
+		}
+		$dir = trailingslashit( get_template_directory() ) . 'assets/img/categories/';
+		if ( is_dir( $dir ) === false ) {
+			update_option( self::CAT_IMG_FLAG, time() );
+			return;
+		}
+		try {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+
+			$terms = get_terms(
+				array(
+					'taxonomy'   => 'product_cat',
+					'hide_empty' => false,
+				)
+			);
+			if ( is_wp_error( $terms ) || empty( $terms ) ) {
+				return; // No terms yet; retry later without setting the flag.
+			}
+			foreach ( $terms as $term ) {
+				if ( (int) get_term_meta( $term->term_id, 'thumbnail_id', true ) > 0 ) {
+					continue;
+				}
+				$file = '';
+				$keys = array_unique( array( $term->slug, sanitize_title( $term->name ) ) );
+				foreach ( $keys as $key ) {
+					$candidate = $dir . $key . '.jpg';
+					if ( file_exists( $candidate ) ) {
+						$file = $candidate;
+						break;
+					}
+				}
+				if ( '' === $file ) {
+					continue;
+				}
+				$attach_id = $this->sideload_category_image( $file, $term->name );
+				if ( $attach_id > 0 ) {
+					update_term_meta( $term->term_id, 'thumbnail_id', $attach_id );
+				}
+			}
+			update_option( self::CAT_IMG_FLAG, time() );
+		} catch ( \Throwable $e ) {
+			error_log( 'TopTech Machinery category image sync failed: ' . $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Copy a bundled image into the media library and return its attachment id.
+	 */
+	private function sideload_category_image( string $path, string $title ): int {
+		$tmp = wp_tempnam( basename( $path ) );
+		if ( empty( $tmp ) ) {
+			return 0;
+		}
+		if ( @copy( $path, $tmp ) === false ) {
+			@unlink( $tmp );
+			return 0;
+		}
+		$file_array = array(
+			'name'     => sanitize_file_name( basename( $path ) ),
+			'tmp_name' => $tmp,
+		);
+		$id = media_handle_sideload( $file_array, 0, $title );
+		if ( is_wp_error( $id ) ) {
+			@unlink( $tmp );
+			return 0;
+		}
+		return (int) $id;
 	}
 }
