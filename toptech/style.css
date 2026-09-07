@@ -1,0 +1,24 @@
+/*
+Theme Name: Ricky Tools
+Theme URI: https://rickytools.com/
+Author: Ricky Tools
+Author URI: https://rickytools.com/
+Description: Ricky Tools - a premium, conversion-focused WooCommerce theme for power tools, solar, and hardware retail. Fast, secure, accessible (WCAG 2.2 AA), and Google Merchant Center compliant. Built for PHP 8.3+, WordPress 6.5+, and WooCommerce 9+.
+Version: 1.17.0
+Requires at least: 6.5
+Tested up to: 6.6
+Requires PHP: 8.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: ricky-tools
+Domain Path: /languages
+Tags: e-commerce, woocommerce, two-columns, right-sidebar, custom-menu, custom-logo, featured-images, translation-ready, rtl-language-support, block-styles, wide-blocks
+*/
+
+/* All runtime styling is enqueued from /assets/css/theme.css (design system + components).
+   This file carries the theme header + the WordPress-required .sr-only/alignment helpers. */
+
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.alignwide{max-width:1200px}
+.alignfull{max-width:100%}
+.aligncenter{display:block;margin-left:auto;margin-right:auto}

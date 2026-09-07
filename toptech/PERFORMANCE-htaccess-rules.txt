@@ -1,0 +1,57 @@
+# ==============================================================
+# RICKY TOOLS - performance rules (compression + browser cache + WebP)
+# Copy EVERYTHING below into the .htaccess file in your WordPress
+# ROOT folder (public_html), ABOVE the line "# BEGIN WordPress".
+# Back the file up first. These are plain Apache rules - no plugin.
+# ==============================================================
+
+# ---- Text compression (Gzip) ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json
+  AddOutputFilterByType DEFLATE application/xml application/rss+xml image/svg+xml
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject font/ttf font/otf font/woff font/woff2
+</IfModule>
+
+# ---- Text compression (Brotli, if the host supports it) ----
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# ---- Browser caching (repeat visits load instantly) ----
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg              "access plus 1 year"
+  ExpiresByType image/png               "access plus 1 year"
+  ExpiresByType image/gif               "access plus 1 year"
+  ExpiresByType image/webp              "access plus 1 year"
+  ExpiresByType image/svg+xml           "access plus 1 year"
+  ExpiresByType image/x-icon            "access plus 1 year"
+  ExpiresByType video/mp4               "access plus 1 year"
+  ExpiresByType text/css                "access plus 1 month"
+  ExpiresByType application/javascript  "access plus 1 month"
+  ExpiresByType font/woff2              "access plus 1 year"
+  ExpiresByType font/woff               "access plus 1 year"
+  ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|css|js|woff2|woff|ttf|otf|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# ---- Auto-serve WebP when a matching .webp file exists ----
+# (Only takes effect once an image optimizer has generated name.jpg.webp files.
+#  Safe: it only rewrites when the .webp actually exists on disk.)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_ACCEPT} image/webp
+  RewriteCond %{REQUEST_FILENAME}\.webp -f
+  RewriteRule (.+)\.(jpe?g|png)$ $1.$2.webp [T=image/webp,L]
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(jpe?g|png)$">
+    Header append Vary Accept
+  </FilesMatch>
+</IfModule>
