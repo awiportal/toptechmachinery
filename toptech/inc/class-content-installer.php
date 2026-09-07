@@ -20,10 +20,12 @@ defined( 'ABSPATH' ) || exit;
 final class Content_Installer {
 
 	private const FLAG = 'toptech_content_installed_v1';
+	private const MENU_FLAG = 'toptech_menus_v2';
 
 	public function hooks(): void {
 		add_action( 'admin_init', array( $this, 'install' ) );
 		add_action( 'admin_init', array( $this, 'ensure_front_page' ) );
+		add_action( 'admin_init', array( $this, 'sync_menus' ) );
 	}
 
 	/**
@@ -106,28 +108,117 @@ final class Content_Installer {
 	}
 
 	/**
-	 * Build primary + footer menus and assign locations.
+	 * Re-sync theme navigation menus once per version so existing sites pick up
+	 * menu changes idempotently, without duplicating items.
+	 */
+	public function sync_menus(): void {
+		if ( get_option( self::MENU_FLAG ) ) {
+			return;
+		}
+		if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
+			return;
+		}
+		try {
+			$slugs = array(
+				'about-us', 'contact-us', 'payment-methods', 'return-refund-policy',
+				'shipping-delivery-policy', 'track-order', 'faq', 'privacy-policy',
+				'terms-conditions', 'warranty-policy', 'cookie-policy',
+			);
+			$ids = array();
+			foreach ( $slugs as $slug ) {
+				$page = get_page_by_path( $slug );
+				if ( $page instanceof \WP_Post ) {
+					$ids[ $slug ] = (int) $page->ID;
+				}
+			}
+			$this->build_menus( $ids );
+			update_option( self::MENU_FLAG, time() );
+		} catch ( \Throwable $e ) {
+			error_log( 'TopTech Machinery menu sync failed: ' . $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Build primary + footer menus and assign locations. Idempotent: the menu
+	 * assigned to each location is cleared and rebuilt from the definitions,
+	 * so the method can be re-run safely.
 	 *
 	 * @param array<string,int> $ids Slug => page ID.
 	 */
 	private function build_menus( array $ids ): void {
+		$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
+
 		$defs = array(
-			'primary' => array( 'about-us', 'contact-us', 'faq' ),
-			'footer_service' => array( 'contact-us', 'track-order', 'faq', 'payment-methods' ),
-			'footer_policies' => array( 'privacy-policy', 'terms-conditions', 'return-refund-policy', 'shipping-delivery-policy', 'warranty-policy', 'cookie-policy' ),
+			'primary'         => array(
+				array( 'custom', 'Home', home_url( '/' ) ),
+				array( 'page', 'about-us' ),
+				array( 'custom', 'Shop', $shop_url ),
+				array( 'page', 'return-refund-policy' ),
+				array( 'page', 'shipping-delivery-policy' ),
+				array( 'page', 'payment-methods' ),
+				array( 'page', 'contact-us' ),
+			),
+			'footer_service'  => array(
+				array( 'page', 'contact-us' ),
+				array( 'page', 'track-order' ),
+				array( 'page', 'faq' ),
+				array( 'page', 'payment-methods' ),
+			),
+			'footer_policies' => array(
+				array( 'page', 'privacy-policy' ),
+				array( 'page', 'terms-conditions' ),
+				array( 'page', 'return-refund-policy' ),
+				array( 'page', 'shipping-delivery-policy' ),
+				array( 'page', 'warranty-policy' ),
+				array( 'page', 'cookie-policy' ),
+			),
 		);
-		foreach ( $defs as $location => $slugs ) {
-			$menu_name = 'TopTech ' . $location;
-			$menu = wp_get_nav_menu_object( $menu_name );
-			$created = $menu ? (int) $menu->term_id : wp_create_nav_menu( $menu_name );
-			if ( is_wp_error( $created ) ) {
+
+		$assigned = function_exists( 'get_nav_menu_locations' ) ? get_nav_menu_locations() : array();
+
+		foreach ( $defs as $location => $items ) {
+			$menu_id = 0;
+			if ( isset( $assigned[ $location ] ) && $assigned[ $location ] ) {
+				$obj = wp_get_nav_menu_object( (int) $assigned[ $location ] );
+				if ( $obj ) {
+					$menu_id = (int) $obj->term_id;
+				}
+			}
+			if ( $menu_id < 1 ) {
+				$menu_name = 'TopTech ' . $location;
+				$menu      = wp_get_nav_menu_object( $menu_name );
+				$created   = $menu ? (int) $menu->term_id : wp_create_nav_menu( $menu_name );
+				if ( is_wp_error( $created ) ) {
+					continue;
+				}
+				$menu_id = (int) $created;
+			}
+			if ( $menu_id < 1 ) {
 				continue;
 			}
-			$menu_id = (int) $created;
-			if ( ! $menu_id || is_wp_error( $menu_id ) ) {
-				continue;
+
+			$existing = wp_get_nav_menu_items( $menu_id, array( 'post_status' => 'any' ) );
+			if ( is_array( $existing ) ) {
+				foreach ( $existing as $item ) {
+					wp_delete_post( (int) $item->ID, true );
+				}
 			}
-			foreach ( $slugs as $slug ) {
+
+			foreach ( $items as $item ) {
+				if ( 'custom' === $item[0] ) {
+					wp_update_nav_menu_item(
+						$menu_id,
+						0,
+						array(
+							'menu-item-title'  => $item[1],
+							'menu-item-url'    => $item[2],
+							'menu-item-type'   => 'custom',
+							'menu-item-status' => 'publish',
+						)
+					);
+					continue;
+				}
+				$slug = $item[1];
 				if ( empty( $ids[ $slug ] ) ) {
 					continue;
 				}
@@ -142,7 +233,8 @@ final class Content_Installer {
 					)
 				);
 			}
-			$locations = get_theme_mod( 'nav_menu_locations', array() );
+
+			$locations              = get_theme_mod( 'nav_menu_locations', array() );
 			$locations[ $location ] = $menu_id;
 			set_theme_mod( 'nav_menu_locations', $locations );
 		}
