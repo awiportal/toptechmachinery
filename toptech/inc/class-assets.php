@@ -29,6 +29,8 @@ final class Assets {
 		$css_rel = file_exists( TOPTECH_DIR . 'assets/css/theme.min.css' ) ? 'assets/css/theme.min.css' : 'assets/css/theme.css';
 		wp_enqueue_style( 'toptech-theme', TOPTECH_URI . $css_rel, array(), TOPTECH_VERSION );
 		wp_style_add_data( 'toptech-theme', 'rtl', 'replace' );
+		wp_enqueue_style( 'toptech-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap', array(), null );
+		wp_enqueue_style( 'toptech-industrial', TOPTECH_URI . 'assets/css/theme-industrial.css', array( 'toptech-theme' ), TOPTECH_VERSION );
 
 		wp_enqueue_script( 'toptech-theme', TOPTECH_URI . 'assets/js/theme.js', array(), TOPTECH_VERSION, true );
 
