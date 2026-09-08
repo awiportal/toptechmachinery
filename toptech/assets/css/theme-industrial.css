@@ -143,3 +143,6 @@ body{background:var(--rk-bg)}
   .rk-catcard,.rk-card,.rk-btn,.rk-nav a::after{transition:none}
   .rk-catcard:hover,.rk-card:hover,.rk-btn:hover{transform:none}
 }
+
+/* All Categories panel: fill the hero height and scroll through every category */
+.rk-vertcat ul{max-height:none;min-height:0}

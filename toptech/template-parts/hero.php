@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 			if ( has_nav_menu( 'vertical_cats' ) ) {
 				wp_nav_menu( array( 'theme_location' => 'vertical_cats', 'container' => false, 'fallback_cb' => false, 'depth' => 1 ) );
 			} else {
-				$terms = function_exists( 'rk_cached_terms' ) ? rk_cached_terms( 'product_cat', 10 ) : array();
+				$terms = function_exists( 'rk_cached_terms' ) ? rk_cached_terms( 'product_cat', 0 ) : array();
 				if ( $terms ) {
 					echo '<ul>';
 					foreach ( $terms as $t ) {
