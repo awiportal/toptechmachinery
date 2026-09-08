@@ -170,10 +170,10 @@ final class Schema {
 			'name'      => get_bloginfo( 'name' ),
 			'url'       => home_url( '/' ),
 			'email'     => get_theme_mod( 'toptech_email', 'info@toptechmachinery.co.ke' ),
-			'telephone' => get_theme_mod( 'toptech_phone', '0719 261277' ),
+			'telephone' => get_theme_mod( 'toptech_phone', '0797 720290' ),
 			'address'   => array(
 				'@type'           => 'PostalAddress',
-				'streetAddress'   => 'Royal Palms Mall, Shop No. BG 55',
+				'streetAddress'   => 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street',
 				'addressLocality' => 'Nairobi',
 				'addressRegion'   => 'Nairobi',
 				'addressCountry'  => 'KE',

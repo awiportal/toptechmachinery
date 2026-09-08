@@ -26,7 +26,7 @@ $rk_trust = array(
 	array(
 		'svg'   => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M20 19a4 4 0 0 1-4 3h-2"/></svg>',
 		'title' => __( 'Here to help', 'toptech-machinery' ),
-		'desc'  => __( 'Talk to us on 0719 261277', 'toptech-machinery' ),
+		'desc'  => __( 'Talk to us on 0797 720290', 'toptech-machinery' ),
 	),
 );
 ?>

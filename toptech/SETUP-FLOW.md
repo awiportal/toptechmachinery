@@ -39,7 +39,7 @@ with the same SKU are updated, not duplicated.
 ## Step 5 - Brand it
 - Upload your logo: Appearance -> Customize -> Site Identity (use `assets/img/logo.webp`).
 - Colours + contact details: Customize -> TopTech Machinery (yellow #005EB8 / navy #0B1E3F,
-  phone 0719 261277, WhatsApp, email info@toptechmachinery.co.ke, Nairobi address).
+  phone 0797 720290, WhatsApp, email info@toptechmachinery.co.ke, Nairobi address).
 - Set the homepage: Settings -> Reading -> "Your homepage displays" is handled automatically,
   but you can point it at the "Home" page if you prefer.
 

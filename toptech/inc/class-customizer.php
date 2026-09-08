@@ -34,11 +34,11 @@ final class Customizer {
 
 		// Contact + support.
 		$wp_customize->add_section( 'toptech_contact', array( 'title' => __( 'Contact & Support', 'toptech-machinery' ), 'panel' => 'toptech_panel' ) );
-		$this->text( $wp_customize, 'toptech_phone', '0719 261277', __( 'Phone / WhatsApp', 'toptech-machinery' ) );
+		$this->text( $wp_customize, 'toptech_phone', '0797 720290', __( 'Phone / WhatsApp', 'toptech-machinery' ) );
 		$this->text( $wp_customize, 'toptech_email', 'info@toptechmachinery.co.ke', __( 'Email', 'toptech-machinery' ) );
 		$this->text( $wp_customize, 'toptech_hours', 'Mon-Sat 8:00am - 6:00pm', __( 'Support Hours', 'toptech-machinery' ) );
-		$this->text( $wp_customize, 'toptech_address', 'Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya', __( 'Business Address', 'toptech-machinery' ) );
-		$this->text( $wp_customize, 'toptech_whatsapp', '254719261277', __( 'WhatsApp number (intl, no +)', 'toptech-machinery' ) );
+		$this->text( $wp_customize, 'toptech_address', 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya', __( 'Business Address', 'toptech-machinery' ) );
+		$this->text( $wp_customize, 'toptech_whatsapp', '254797720290', __( 'WhatsApp number (intl, no +)', 'toptech-machinery' ) );
 	}
 
 	private function color( $wp, string $id, string $default, string $label ): void {

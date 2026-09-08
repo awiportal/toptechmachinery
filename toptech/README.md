@@ -66,8 +66,8 @@ folder separately and install it the same way, then activate the child.
 
 ## Support / brand details baked in
 
-- Phone / WhatsApp: **0719 261277**  ·  Email: **info@toptechmachinery.co.ke**
-- Address: **Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya**
+- Phone / WhatsApp: **0797 720290**  ·  Email: **info@toptechmachinery.co.ke**
+- Address: **This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya**
 
 ## Roadmap (phases still to build)
 

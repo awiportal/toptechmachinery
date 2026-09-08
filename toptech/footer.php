@@ -7,10 +7,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$rk_phone    = get_theme_mod( 'toptech_phone', '0719 261277' );
+$rk_phone    = get_theme_mod( 'toptech_phone', '0797 720290' );
 $rk_email    = get_theme_mod( 'toptech_email', 'info@toptechmachinery.co.ke' );
-$rk_address  = get_theme_mod( 'toptech_address', 'Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya' );
-$rk_whatsapp = get_theme_mod( 'toptech_whatsapp', '254719261277' );
+$rk_address  = get_theme_mod( 'toptech_address', 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya' );
+$rk_whatsapp = get_theme_mod( 'toptech_whatsapp', '254797720290' );
 ?>
 </div><!-- #content -->
 <footer class="rk-footer">

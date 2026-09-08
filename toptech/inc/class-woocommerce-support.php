@@ -756,7 +756,7 @@ final class WooCommerce_Support {
 		echo '</ol>';
 		echo '<div class="rk-next__cta">';
 		printf( '<a class="rk-btn rk-btn--primary" href="%s">%s</a>', esc_url( $shop ), esc_html__( 'Continue shopping', 'toptech-machinery' ) );
-		echo '<p class="rk-next__help">' . esc_html__( 'Questions about your order? Call us on 0719 261277.', 'toptech-machinery' ) . '</p>';
+		echo '<p class="rk-next__help">' . esc_html__( 'Questions about your order? Call us on 0797 720290.', 'toptech-machinery' ) . '</p>';
 		echo '</div>';
 		echo '</section>';
 	}

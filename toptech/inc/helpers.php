@@ -71,7 +71,7 @@ add_action( 'delete_product_cat', 'rk_bump_terms_version' );
  * Sanitised WhatsApp number (digits only), editable in Customizer > Contact.
  */
 function rk_whatsapp_number(): string {
-	$raw = (string) get_theme_mod( 'toptech_whatsapp', '254719261277' );
+	$raw = (string) get_theme_mod( 'toptech_whatsapp', '254797720290' );
 	$num = preg_replace( '/[^0-9]/', '', $raw );
 	return is_string( $num ) ? $num : '';
 }

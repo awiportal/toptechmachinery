@@ -2,7 +2,7 @@
    TopTech Machinery - UI 2.0 . Bold Industrial (v1.19.0)
    Layered override (loads after theme.min.css). Redefines the
    design tokens so token-driven components update automatically,
-   then restyles each surface. Base stays blue/navy; a warm amber
+   then restyles each surface. Base stays blue/navy; a teal
    accent drives CTAs, prices and tags. Headings use a condensed
    industrial display face (Oswald).
    ============================================================ */
@@ -11,7 +11,7 @@
 :root{
   --rk-primary:#005EB8;--rk-primary-600:#00468A;--rk-primary-300:#5AA9F0;
   --rk-navy:#0B1E3F;--rk-navy-700:#081733;--rk-navy-900:#05101f;
-  --rk-accent:#F5A623;--rk-accent-600:#E08E0B;--rk-accent-700:#A96A05;--rk-accent-tint:rgba(245,166,35,.14);
+  --rk-accent:#10B5A8;--rk-accent-600:#0E9E93;--rk-accent-700:#0A756D;--rk-accent-tint:rgba(16,181,168,.14);
   --rk-ink:#141a26;--rk-muted:#5b6472;--rk-line:#dde3ec;--rk-bg:#eef2f7;--rk-white:#fff;
   --rk-radius:6px;--rk-radius-sm:4px;
   --rk-shadow:0 2px 10px rgba(11,30,63,.08);
@@ -41,14 +41,14 @@ body{background:var(--rk-bg)}
 .rk-search button:hover{background:var(--rk-accent-600)}
 .rk-cart-count{background:var(--rk-accent);color:var(--rk-navy)}
 
-/* ---------------- Primary nav: uppercase + amber underline ---------------- */
+/* ---------------- Primary nav: uppercase + teal underline ---------------- */
 .rk-nav a{text-transform:uppercase;letter-spacing:.05em;font-weight:700;font-size:.84rem;position:relative}
 .rk-nav a::after{content:"";position:absolute;left:14px;right:14px;bottom:9px;height:2px;
   background:var(--rk-accent);transform:scaleX(0);transform-origin:left;transition:transform .2s}
 .rk-nav a:hover::after,.rk-nav .current-menu-item>a::after{transform:scaleX(1)}
 .rk-nav a:hover,.rk-nav .current-menu-item>a{color:#fff}
 
-/* ---------------- Section headers: amber notch ---------------- */
+/* ---------------- Section headers: teal notch ---------------- */
 .rk-section__head h2{text-transform:uppercase;letter-spacing:.02em;font-size:1.7rem;position:relative;padding-left:16px}
 .rk-section__head h2::before{content:"";position:absolute;left:0;top:.14em;bottom:.14em;width:5px;
   background:var(--rk-accent);border-radius:2px}
@@ -91,7 +91,7 @@ body{background:var(--rk-bg)}
 .rk-badge--sale{background:var(--rk-accent);color:var(--rk-navy)}
 .rk-badge--feat{background:var(--rk-navy);color:#fff}
 
-/* Add-to-cart -> amber CTA (loop) */
+/* Add-to-cart -> teal CTA (loop) */
 .rk-card .rk-btn,ul.products li.product a.button,
 .woocommerce ul.products li.product a.button.add_to_cart_button,
 .woocommerce a.button.add_to_cart_button{

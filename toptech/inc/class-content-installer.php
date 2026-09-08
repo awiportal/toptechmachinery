@@ -28,6 +28,7 @@ final class Content_Installer {
 		add_action( 'admin_init', array( $this, 'ensure_front_page' ) );
 		add_action( 'admin_init', array( $this, 'sync_menus' ) );
 		add_action( 'admin_init', array( $this, 'sync_category_images' ) );
+		add_action( 'admin_init', array( $this, 'refresh_contact_details' ) );
 	}
 
 	/**
@@ -249,9 +250,9 @@ final class Content_Installer {
 	 */
 	private function pages(): array {
 		$name  = 'TopTech Machinery';
-		$phone = '0719 261277';
+		$phone = '0797 720290';
 		$mail  = 'info@toptechmachinery.co.ke';
-		$addr  = 'Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya';
+		$addr  = 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya';
 
 		return array(
 			'about-us' => array(
@@ -386,5 +387,58 @@ final class Content_Installer {
 			return 0;
 		}
 		return (int) $id;
+	}
+
+	/**
+	 * One-time migration: refresh contact details (phone, WhatsApp, address)
+	 * on existing installs after a details change. Updates a saved Customizer
+	 * value only when it still equals the previous default, and rewrites the
+	 * matching strings inside the auto-generated info / legal pages. Idempotent.
+	 */
+	public function refresh_contact_details(): void {
+		if ( get_option( 'toptech_contact_refresh_v1' ) ) {
+			return;
+		}
+		if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
+			return;
+		}
+		try {
+			$mods = array(
+				'toptech_phone'    => array( '0719 261277', '0797 720290' ),
+				'toptech_whatsapp' => array( '254719261277', '254797720290' ),
+				'toptech_address'  => array( 'Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya', 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya' ),
+			);
+			foreach ( $mods as $key => $pair ) {
+				if ( get_theme_mod( $key ) === $pair[0] ) {
+					set_theme_mod( $key, $pair[1] );
+				}
+			}
+			$repl = array(
+				'Royal Palms Mall, Shop No. BG 55, Nairobi, Kenya' => 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya',
+				'Royal Palms Mall, Shop No. BG 55'                 => 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street',
+				'0719 261277'                                      => '0797 720290',
+				'254719261277'                                     => '254797720290',
+			);
+			$slugs = array(
+				'about-us', 'contact-us', 'payment-methods', 'return-refund-policy',
+				'shipping-delivery-policy', 'track-order', 'faq', 'privacy-policy',
+				'terms-conditions', 'warranty-policy', 'cookie-policy', 'home',
+			);
+			foreach ( $slugs as $slug ) {
+				$page = get_page_by_path( $slug );
+				if ( $page instanceof \WP_Post === false ) {
+					continue;
+				}
+				$content = (string) $page->post_content;
+				$updated = strtr( $content, $repl );
+				if ( $updated === $content ) {
+					continue;
+				}
+				wp_update_post( array( 'ID' => (int) $page->ID, 'post_content' => $updated ) );
+			}
+			update_option( 'toptech_contact_refresh_v1', time() );
+		} catch ( \Throwable $e ) {
+			error_log( 'TopTech Machinery contact refresh failed: ' . $e->getMessage() );
+		}
 	}
 }
