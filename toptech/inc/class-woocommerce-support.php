@@ -118,6 +118,7 @@ final class WooCommerce_Support {
 	public function unhook_loop_defaults(): void {
 		remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 );
 		remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+		remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
 		remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
 		remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
 		remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
@@ -144,7 +145,6 @@ final class WooCommerce_Support {
 		if ( ! $product instanceof \WC_Product ) {
 			return;
 		}
-		echo '<div class="rk-card__badges">';
 		if ( $product->is_on_sale() ) {
 			echo '<span class="rk-badge rk-badge--sale">' . esc_html__( 'Sale', 'toptech-machinery' ) . '</span>';
 		}
@@ -153,7 +153,6 @@ final class WooCommerce_Support {
 		} elseif ( $product->is_featured() ) {
 			echo '<span class="rk-badge rk-badge--feat">' . esc_html__( 'Featured', 'toptech-machinery' ) . '</span>';
 		}
-		echo '</div>';
 	}
 
 	/**
