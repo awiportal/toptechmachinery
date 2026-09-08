@@ -121,7 +121,7 @@ ul.products{list-style:none;margin:0;padding:0;display:grid;grid-template-column
 .rk-card__badges{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:6px;z-index:2}
 .rk-badge{font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:20px;color:#fff}
 .rk-badge--sale{background:#e23b3b}.rk-badge--oos{background:#6b7280}.rk-badge--feat{background:var(--rk-navy)}
-.rk-card__media{position:relative}
+.rk-card__media{position:relative;margin:-14px -14px 0}
 .rk-card__media img,ul.products li.product a img{aspect-ratio:1;object-fit:contain;width:100%;background:#fff}
 .rk-card__actions{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateX(8px);transition:.2s;z-index:2}
 .rk-card:hover .rk-card__actions{opacity:1;transform:none}
