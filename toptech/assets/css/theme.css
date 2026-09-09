@@ -177,7 +177,7 @@ ul.products{list-style:none;margin:0;padding:0;display:grid;grid-template-column
 }
 @media(max-width:768px){
   .rk-header__top{font-size:.76rem}
-  .rk-header__hours{display:none}
+  .rk-header__hours{display:block;width:100%;text-align:center}
   .rk-header__top .container{justify-content:center}
   .rk-header__contact{gap:14px;justify-content:center}
   .rk-header__mid .container{grid-template-columns:auto 1fr auto;gap:10px}

@@ -32,6 +32,7 @@ final class Content_Installer {
 		add_action( 'admin_init', array( $this, 'refresh_pages_content' ) );
 		add_action( 'admin_init', array( $this, 'seed_contact_defaults' ) );
 		add_action( 'admin_init', array( $this, 'cleanup_competitor_brand' ) );
+		add_action( 'admin_init', array( $this, 'reclassify_dewalt_welders' ) );
 	}
 
 	/**
@@ -583,6 +584,89 @@ final class Content_Installer {
 			update_option( 'toptech_brand_cleanup_v1', time() );
 		} catch ( \Throwable $e ) {
 			error_log( 'TopTech Machinery brand cleanup failed: ' . $e->getMessage() );
+		}
+	}
+
+	/**
+	 * One-time cleanup: reclassify mislabelled "DeWalt" welders. DeWalt does not
+	 * manufacture arc / MMA stick inverter welders, so these listings read as
+	 * counterfeit / brand misrepresentation to Google Merchant Center. This
+	 * migration retitles the affected products, strips the DeWalt name from their
+	 * copy and non-serialized stored meta, and reassigns their product_brand term
+	 * to "Generic" (created if absent). Targets a fixed set of known welder IDs,
+	 * only acts on ones whose title still claims DeWalt, and runs once (own flag).
+	 * Idempotent.
+	 */
+	public function reclassify_dewalt_welders(): void {
+		if ( get_option( 'toptech_brand_reclass_v1' ) ) {
+			return;
+		}
+		if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
+			return;
+		}
+		try {
+			$targets = array( 30874, 13315, 12924 );
+			$clean   = static function ( string $value ): string {
+				return str_ireplace( array( 'DeWalt', 'De Walt', 'De-Walt' ), 'Generic', $value );
+			};
+			$brand_term_id = 0;
+			if ( taxonomy_exists( 'product_brand' ) ) {
+				$term = get_term_by( 'slug', 'generic', 'product_brand' );
+				if ( $term instanceof \WP_Term ) {
+					$brand_term_id = (int) $term->term_id;
+				} else {
+					$inserted = wp_insert_term( 'Generic', 'product_brand', array( 'slug' => 'generic' ) );
+					if ( is_array( $inserted ) && isset( $inserted['term_id'] ) ) {
+						$brand_term_id = (int) $inserted['term_id'];
+					}
+				}
+			}
+			foreach ( $targets as $target_id ) {
+				$post = get_post( (int) $target_id );
+				if ( $post instanceof \WP_Post === false ) {
+					continue;
+				}
+				if ( stripos( (string) $post->post_title, 'Walt' ) === false ) {
+					continue; // Already reclassified or not the expected product.
+				}
+				$update  = array();
+				$title   = $clean( (string) $post->post_title );
+				$content = $clean( (string) $post->post_content );
+				$excerpt = $clean( (string) $post->post_excerpt );
+				if ( $title !== $post->post_title ) {
+					$update['post_title'] = $title;
+				}
+				if ( $content !== $post->post_content ) {
+					$update['post_content'] = $content;
+				}
+				if ( $excerpt !== $post->post_excerpt ) {
+					$update['post_excerpt'] = $excerpt;
+				}
+				if ( count( $update ) > 0 ) {
+					$update['ID'] = (int) $target_id;
+					wp_update_post( $update );
+				}
+				$metas = get_post_meta( (int) $target_id );
+				if ( is_array( $metas ) ) {
+					foreach ( $metas as $meta_key => $meta_values ) {
+						foreach ( (array) $meta_values as $meta_value ) {
+							if ( is_string( $meta_value ) === false || is_serialized( $meta_value ) || stripos( $meta_value, 'Walt' ) === false ) {
+								continue;
+							}
+							$new_value = $clean( $meta_value );
+							if ( $new_value !== $meta_value ) {
+								update_post_meta( (int) $target_id, $meta_key, $new_value, $meta_value );
+							}
+						}
+					}
+				}
+				if ( $brand_term_id > 0 ) {
+					wp_set_object_terms( (int) $target_id, array( $brand_term_id ), 'product_brand', false );
+				}
+			}
+			update_option( 'toptech_brand_reclass_v1', time() );
+		} catch ( \Throwable $e ) {
+			error_log( 'TopTech Machinery brand reclassification failed: ' . $e->getMessage() );
 		}
 	}
 }
