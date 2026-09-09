@@ -31,6 +31,7 @@ final class Content_Installer {
 		add_action( 'admin_init', array( $this, 'refresh_contact_details' ) );
 		add_action( 'admin_init', array( $this, 'refresh_pages_content' ) );
 		add_action( 'admin_init', array( $this, 'seed_contact_defaults' ) );
+		add_action( 'admin_init', array( $this, 'cleanup_competitor_brand' ) );
 	}
 
 	/**
@@ -503,6 +504,85 @@ final class Content_Installer {
 			update_option( 'toptech_contact_seed_v1', time() );
 		} catch ( \Throwable $e ) {
 			error_log( 'TopTech Machinery contact seed failed: ' . $e->getMessage() );
+		}
+	}
+
+	/**
+	 * One-time cleanup: strip leftover competitor brand references from product
+	 * content. Earlier product copy contained "Ricky Power Tools" (and a
+	 * truncated "from Ricky.") which was bulk-replaced in the database; this
+	 * migration self-heals any residual mentions on deploy so no stray copy
+	 * survives in titles, descriptions, short descriptions or stored SEO meta.
+	 * Targets only posts that still reference the old name, is case-insensitive
+	 * for the full phrase, and runs once (own flag). Idempotent.
+	 */
+	public function cleanup_competitor_brand(): void {
+		if ( get_option( 'toptech_brand_cleanup_v1' ) ) {
+			return;
+		}
+		if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
+			return;
+		}
+		try {
+			global $wpdb;
+			if ( is_object( $wpdb ) === false ) {
+				return;
+			}
+			$clean = static function ( string $value ): string {
+				$value = str_ireplace( 'Ricky Power Tools', 'TopTech Machinery', $value );
+				$value = strtr( $value, array( 'from Ricky.' => 'from TopTech Machinery.' ) );
+				return $value;
+			};
+			$like = '%' . $wpdb->esc_like( 'Ricky' ) . '%';
+			$ids  = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT p.ID FROM {$wpdb->posts} p LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID WHERE p.post_status <> 'trash' AND ( p.post_title LIKE %s OR p.post_content LIKE %s OR p.post_excerpt LIKE %s OR pm.meta_value LIKE %s )",
+					$like,
+					$like,
+					$like,
+					$like
+				)
+			);
+			foreach ( (array) $ids as $id ) {
+				$post = get_post( (int) $id );
+				if ( $post instanceof \WP_Post === false ) {
+					continue;
+				}
+				$update  = array();
+				$title   = $clean( (string) $post->post_title );
+				$content = $clean( (string) $post->post_content );
+				$excerpt = $clean( (string) $post->post_excerpt );
+				if ( $title !== $post->post_title ) {
+					$update['post_title'] = $title;
+				}
+				if ( $content !== $post->post_content ) {
+					$update['post_content'] = $content;
+				}
+				if ( $excerpt !== $post->post_excerpt ) {
+					$update['post_excerpt'] = $excerpt;
+				}
+				if ( count( $update ) > 0 ) {
+					$update['ID'] = (int) $id;
+					wp_update_post( $update );
+				}
+				$metas = get_post_meta( (int) $id );
+				if ( is_array( $metas ) ) {
+					foreach ( $metas as $meta_key => $meta_values ) {
+						foreach ( (array) $meta_values as $meta_value ) {
+							if ( is_string( $meta_value ) === false || is_serialized( $meta_value ) || stripos( $meta_value, 'Ricky' ) === false ) {
+								continue;
+							}
+							$new_value = $clean( $meta_value );
+							if ( $new_value !== $meta_value ) {
+								update_post_meta( (int) $id, $meta_key, $new_value, $meta_value );
+							}
+						}
+					}
+				}
+			}
+			update_option( 'toptech_brand_cleanup_v1', time() );
+		} catch ( \Throwable $e ) {
+			error_log( 'TopTech Machinery brand cleanup failed: ' . $e->getMessage() );
 		}
 	}
 }
