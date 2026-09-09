@@ -48,7 +48,7 @@ final class Ajax {
 			wp_send_json_error( array( 'message' => esc_html__( 'Could not add to cart.', 'toptech-machinery' ) ), 400 );
 		}
 
-		WC_AJAX::get_refreshed_fragments();
+		\WC_AJAX::get_refreshed_fragments();
 	}
 
 	/**
