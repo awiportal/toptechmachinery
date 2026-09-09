@@ -38,6 +38,7 @@
       const res = await fetch(ToptechAjax.ajaxUrl, { method: 'POST', body, credentials: 'same-origin' });
       const data = await res.json();
       if (applyFragments(data)) {
+        if (window.jQuery) { try { window.jQuery(document.body).trigger('added_to_cart', [data.fragments, data.cart_hash || '', null]); } catch (e) {} }
         openDrawer();
       } else {
         window.location.href = ToptechAjax.cartUrl;

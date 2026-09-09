@@ -39,7 +39,6 @@ final class WooCommerce_Support {
 
 		// Mini-cart fragment refresh (count bubble).
 		add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'cart_count_fragment' ) );
-		add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'drawer_fragment' ) );
 
 		// Breadcrumb tuning.
 		add_filter( 'woocommerce_breadcrumb_defaults', array( $this, 'breadcrumbs' ) );
@@ -168,21 +167,6 @@ final class WooCommerce_Support {
 		return $fragments;
 	}
 
-	/**
-	 * Refresh the slide-in cart drawer contents on add-to-cart.
-	 *
-	 * @param array $fragments Fragment map.
-	 */
-	public function drawer_fragment( array $fragments ): array {
-		if ( ! function_exists( 'woocommerce_mini_cart' ) ) {
-			return $fragments;
-		}
-		ob_start();
-		woocommerce_mini_cart();
-		$mini = ob_get_clean();
-		$fragments['div.rk-drawer__body'] = '<div class="rk-drawer__body widget_shopping_cart_content">' . $mini . '</div>';
-		return $fragments;
-	}
 
 	/**
 	 * @param array $defaults Breadcrumb args.

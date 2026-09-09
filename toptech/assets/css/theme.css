@@ -318,6 +318,10 @@ body.rk-noscroll{overflow:hidden}
 .rk-spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--rk-line);border-top-color:var(--rk-navy);animation:rkspin .7s linear infinite}
 @keyframes rkspin{to{transform:rotate(360deg)}}
 @media(max-width:520px){.rk-drawer__panel{width:100%;max-width:100%}}
+.rk-drawer__foot{padding:14px 18px;border-top:1px solid var(--rk-line);display:flex;flex-direction:column;gap:10px;background:#fff}
+.rk-drawer__foot .rk-btn{display:block;text-align:center;padding:.85rem 1rem;border-radius:8px;font-weight:800;text-decoration:none}
+.rk-drawer__body .woocommerce-mini-cart__buttons{display:none}
+.rk-drawer__body:has(.woocommerce-mini-cart__empty-message) ~ .rk-drawer__foot .rk-drawer__checkout{display:none}
 
 
 /* ===== v1.5.0: full WooCommerce page polish (shop, cart, checkout, account, forms) ===== */

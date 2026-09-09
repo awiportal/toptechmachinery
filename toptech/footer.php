@@ -60,7 +60,13 @@ $rk_whatsapp = get_theme_mod( 'toptech_whatsapp', '254797720290' );
 			<h3><?php esc_html_e( 'Your Cart', 'toptech-machinery' ); ?></h3>
 			<button type="button" class="rk-drawer__close" data-rk-drawer-close aria-label="<?php esc_attr_e( 'Close cart', 'toptech-machinery' ); ?>">&times;</button>
 		</div>
-		<div class="rk-drawer__body widget_shopping_cart_content"><?php woocommerce_mini_cart(); ?></div>
+		<div class="rk-drawer__body">
+			<div class="widget_shopping_cart_content"><?php woocommerce_mini_cart(); ?></div>
+		</div>
+		<div class="rk-drawer__foot">
+			<a class="rk-btn rk-btn--ghost rk-btn--block" href="#" data-rk-drawer-close><?php esc_html_e( 'Continue shopping', 'toptech-machinery' ); ?></a>
+			<a class="rk-btn rk-btn--primary rk-btn--block rk-drawer__checkout" href="<?php echo esc_url( function_exists( 'wc_get_checkout_url' ) ? wc_get_checkout_url() : '' ); ?>"><?php esc_html_e( 'Proceed to checkout', 'toptech-machinery' ); ?></a>
+		</div>
 		<div class="rk-drawer__spin" aria-hidden="true"><span class="rk-spinner"></span></div>
 	</aside>
 </div>
