@@ -9,7 +9,7 @@ declare( strict_types = 1 );
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'TOPTECH_VERSION', '1.20.4' );
+define( 'TOPTECH_VERSION', '1.20.5' );
 define( 'TOPTECH_DIR', trailingslashit( get_template_directory() ) );
 define( 'TOPTECH_URI', trailingslashit( get_template_directory_uri() ) );
 

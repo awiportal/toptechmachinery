@@ -30,6 +30,7 @@ final class Content_Installer {
 		add_action( 'admin_init', array( $this, 'sync_category_images' ) );
 		add_action( 'admin_init', array( $this, 'refresh_contact_details' ) );
 		add_action( 'admin_init', array( $this, 'refresh_pages_content' ) );
+		add_action( 'admin_init', array( $this, 'seed_contact_defaults' ) );
 	}
 
 	/**
@@ -471,6 +472,37 @@ final class Content_Installer {
 			update_option( 'toptech_contact_refresh_v1', time() );
 		} catch ( \Throwable $e ) {
 			error_log( 'TopTech Machinery contact refresh failed: ' . $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Seed the contact/support theme mods with the real business details on
+	 * first run so the site (and the merchant inspector) always has a phone and
+	 * email, even before anyone opens the Customizer. Only fills empty values.
+	 */
+	public function seed_contact_defaults(): void {
+		if ( get_option( 'toptech_contact_seed_v1' ) ) {
+			return;
+		}
+		if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
+			return;
+		}
+		try {
+			$defaults = array(
+				'toptech_phone'    => '0797 720290',
+				'toptech_email'    => 'info@toptechmachinery.co.ke',
+				'toptech_hours'    => 'Mon-Sat 8:00am - 6:00pm',
+				'toptech_address'  => 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya',
+				'toptech_whatsapp' => '254797720290',
+			);
+			foreach ( $defaults as $key => $val ) {
+				if ( trim( (string) get_theme_mod( $key, '' ) ) === '' ) {
+					set_theme_mod( $key, $val );
+				}
+			}
+			update_option( 'toptech_contact_seed_v1', time() );
+		} catch ( \Throwable $e ) {
+			error_log( 'TopTech Machinery contact seed failed: ' . $e->getMessage() );
 		}
 	}
 }
