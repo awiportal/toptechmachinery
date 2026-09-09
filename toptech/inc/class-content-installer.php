@@ -263,7 +263,7 @@ final class Content_Installer {
             ),
             'contact-us' => array(
                 'title'   => 'Contact Us',
-                'content' => "<p>You can reach {$name} by phone, WhatsApp, email or in person at our Nairobi shop. We answer most calls and messages the same day during opening hours.</p><h2>Phone and WhatsApp</h2><p>Call or message us on {$phone}. WhatsApp is usually the quickest way to send a photo of what you need or to place an order.</p><h2>Email</h2><p>Write to us at {$mail}. Please include your order number if your message is about an order you have already placed.</p><h2>Our shop</h2><p>{$addr}</p><p>Open Monday to Saturday, 8:00am to 6:00pm. Closed on Sundays and public holidays.</p><h2>Send us a message</h2><p>Fill in the form below and we will get back to you within one working day. During opening hours a call or WhatsApp message will always reach us faster.</p>[contact-form-7 title=\"Contact form\"]",
+                'content' => "<p>You can reach {$name} by phone, WhatsApp, email or in person at our Nairobi shop. We answer most calls and messages the same day during opening hours.</p><h2>Phone and WhatsApp</h2><p>Call or message us on {$phone}. WhatsApp is usually the quickest way to send a photo of what you need or to place an order.</p><h2>Email</h2><p>Write to us at {$mail}. Please include your order number if your message is about an order you have already placed.</p><h2>Our shop</h2><p>{$addr}</p><p>Open Monday to Saturday, 8:00am to 6:00pm. Closed on Sundays and public holidays.</p><h2>Send us a message</h2><p>The quickest way to reach us is a call or WhatsApp on {$phone}. You can also email us and we will reply within one working day.</p><p class=\"rk-contact-actions\"><a class=\"rk-btn rk-btn--primary\" href=\"tel:+254797720290\">Call {$phone}</a> <a class=\"rk-btn rk-btn--primary\" href=\"https://wa.me/254797720290\">WhatsApp us</a> <a class=\"rk-btn rk-btn--ghost\" href=\"mailto:{$mail}\">Email us</a></p>",
             ),
             'privacy-policy' => array(
                 'title'   => 'Privacy Policy',
@@ -310,7 +310,7 @@ final class Content_Installer {
      * pages or clobbering later manual edits. Idempotent (own flag).
      */
     public function refresh_pages_content(): void {
-        if ( get_option( 'toptech_pages_content_v2' ) ) {
+        if ( get_option( 'toptech_pages_content_v3' ) ) {
             return;
         }
         if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
@@ -329,7 +329,7 @@ final class Content_Installer {
                     )
                 );
             }
-            update_option( 'toptech_pages_content_v2', time() );
+            update_option( 'toptech_pages_content_v3', time() );
         } catch ( \Throwable $e ) {
             error_log( 'TopTech Machinery pages content refresh failed: ' . $e->getMessage() );
         }
