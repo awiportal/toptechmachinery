@@ -170,13 +170,26 @@ final class Schema {
 			'name'      => get_bloginfo( 'name' ),
 			'url'       => home_url( '/' ),
 			'email'     => get_theme_mod( 'toptech_email', 'info@toptechmachinery.co.ke' ),
-			'telephone' => get_theme_mod( 'toptech_phone', '0797 720290' ),
+			'telephone' => $this->tel_e164(),
 			'address'   => array(
 				'@type'           => 'PostalAddress',
-				'streetAddress'   => 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street',
+				'streetAddress'   => $this->street_address(),
 				'addressLocality' => 'Nairobi',
 				'addressRegion'   => 'Nairobi',
+				'postalCode'      => '00100',
 				'addressCountry'  => 'KE',
+			),
+			'areaServed' => array(
+				'@type' => 'Country',
+				'name'  => 'Kenya',
+			),
+			'openingHoursSpecification' => array(
+				array(
+					'@type'     => 'OpeningHoursSpecification',
+					'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ),
+					'opens'     => '08:00',
+					'closes'    => '18:00',
+				),
 			),
 		);
 		$logo = get_theme_mod( 'custom_logo' );
@@ -312,6 +325,10 @@ final class Schema {
 				),
 			),
 		);
+		// Return and shipping markup, mirroring the Merchant Center settings.
+		$data['offers']['hasMerchantReturnPolicy'] = $this->return_policy();
+		$data['offers']['shippingDetails']         = $this->shipping_details();
+
 		$gtin = get_post_meta( $product->get_id(), '_gtin', true );
 		if ( $gtin ) {
 			$data['gtin'] = $gtin;
@@ -328,6 +345,102 @@ final class Schema {
 			$data['image'] = esc_url( $img );
 		}
 		$this->print_ld( $data );
+	}
+
+	/**
+	 * Street address for schema, derived from the Customizer value so the markup
+	 * cannot drift from the address shown in the header and footer. The stored
+	 * value ends in ", Nairobi, Kenya", which PostalAddress carries separately in
+	 * addressLocality / addressCountry, so that tail is trimmed here.
+	 */
+	private function street_address(): string {
+		$addr = (string) get_theme_mod( 'toptech_address', 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya' );
+		$addr = (string) preg_replace( '/,\s*Nairobi\s*,\s*Kenya\s*$/i', '', $addr );
+		return trim( $addr, " ,\t\n\r" );
+	}
+
+	/**
+	 * Phone in E.164, which is the format schema.org and Google expect. Falls
+	 * back to the stored value when it cannot be normalised.
+	 */
+	private function tel_e164(): string {
+		$raw    = (string) get_theme_mod( 'toptech_phone', '0797 720290' );
+		$digits = (string) preg_replace( '/\D+/', '', $raw );
+		if ( 10 === strlen( $digits ) && 0 === strpos( $digits, '0' ) ) {
+			return '+254' . substr( $digits, 1 );
+		}
+		if ( 0 === strpos( $digits, '254' ) ) {
+			return '+' . $digits;
+		}
+		return $raw;
+	}
+
+	/**
+	 * MerchantReturnPolicy mirroring the Merchant Center return settings and the
+	 * published Return & Refund Policy: a 14-day window for Kenya, returns in
+	 * store or at a nominated drop-off point, no restocking fee, and the customer
+	 * covering carriage on change-of-mind returns (we pay when the item is faulty).
+	 *
+	 * @return array<string,mixed>
+	 */
+	private function return_policy(): array {
+		return (array) apply_filters(
+			'toptech_schema_return_policy',
+			array(
+				'@type'                => 'MerchantReturnPolicy',
+				'applicableCountry'    => 'KE',
+				'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+				'merchantReturnDays'   => 14,
+				'returnMethod'         => array(
+					'https://schema.org/ReturnInStore',
+					'https://schema.org/ReturnAtKiosk',
+				),
+				'returnFees'           => 'https://schema.org/ReturnFeesCustomerResponsibility',
+				'restockingFee'        => array(
+					'@type'    => 'MonetaryAmount',
+					'value'    => 0,
+					'currency' => 'KES',
+				),
+				'merchantReturnLink'   => home_url( '/return-refund-policy/' ),
+			)
+		);
+	}
+
+	/**
+	 * OfferShippingDetails mirroring the Merchant Center shipping service: flat
+	 * rate to Kenya, delivered in 1 to 5 working days. Handling is 0-1 day
+	 * (orders confirmed before 3:00pm ship the same day) and transit 1-4 days, so
+	 * the total Google derives stays inside the declared 1-5 day range. The flat
+	 * rate is calculated at checkout, so no amount is asserted here.
+	 *
+	 * @return array<string,mixed>
+	 */
+	private function shipping_details(): array {
+		return (array) apply_filters(
+			'toptech_schema_shipping_details',
+			array(
+				'@type'               => 'OfferShippingDetails',
+				'shippingDestination' => array(
+					'@type'          => 'DefinedRegion',
+					'addressCountry' => 'KE',
+				),
+				'deliveryTime'        => array(
+					'@type'        => 'ShippingDeliveryTime',
+					'handlingTime' => array(
+						'@type'    => 'QuantitativeValue',
+						'minValue' => 0,
+						'maxValue' => 1,
+						'unitCode' => 'DAY',
+					),
+					'transitTime'  => array(
+						'@type'    => 'QuantitativeValue',
+						'minValue' => 1,
+						'maxValue' => 4,
+						'unitCode' => 'DAY',
+					),
+				),
+			)
+		);
 	}
 
 	private function brand_name( \WC_Product $product ): string {
