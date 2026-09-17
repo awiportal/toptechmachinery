@@ -65,10 +65,19 @@ $rk_whatsapp = get_theme_mod( 'toptech_whatsapp', '254797720290' );
 					<?php echo rk_icon( 'user' ); // phpcs:ignore ?>
 					<span><?php esc_html_e( 'Account', 'toptech-machinery' ); ?></span>
 				</a>
-				<a class="rk-actions__item" href="<?php echo esc_url( home_url( '/wishlist/' ) ); ?>">
+				<?php
+				/**
+				 * Wishlist action. The /wishlist/ page 404s unless a wishlist plugin
+				 * provides it, so only render the link when the page actually exists.
+				 */
+				$rk_wishlist = get_page_by_path( 'wishlist' );
+				if ( $rk_wishlist instanceof WP_Post && 'publish' === $rk_wishlist->post_status ) :
+					?>
+				<a class="rk-actions__item" href="<?php echo esc_url( get_permalink( $rk_wishlist ) ); ?>">
 					<?php echo rk_icon( 'heart' ); // phpcs:ignore ?>
 					<span><?php esc_html_e( 'Wishlist', 'toptech-machinery' ); ?></span>
 				</a>
+				<?php endif; ?>
 				<?php if ( $rk_has_wc ) : ?>
 				<a class="rk-actions__item" href="<?php echo esc_url( $rk_cart_url ); ?>" data-rk-drawer-open>
 					<?php echo rk_icon( 'cart' ); // phpcs:ignore ?>
