@@ -23,6 +23,7 @@ final class Assets {
 		// Trim WooCommerce bloat on non-woo pages (perf).
 		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_woo_bloat' ), 99 );
 			add_action( 'init', array( $this, 'trim_head' ) );
+		add_action( 'admin_head', array( $this, 'admin_list_css' ) );
 	}
 
 	public function enqueue(): void {
@@ -118,4 +119,39 @@ final class Assets {
 		);
 	}
 
+
+	/**
+	 * Keep the Products list table readable in wp-admin.
+	 *
+	 * Rank Math adds an "SEO Details" column to the products list. Between that,
+	 * the WooCommerce columns, the GTIN/ISBN plugin column and two separate brand
+	 * taxonomies, the table runs out of horizontal room and the SEO column
+	 * collapses to roughly one character wide. Its text then wraps a letter per
+	 * line ("Keyword: Not Set", "Schema: WooCommerce Product"), which stretches
+	 * every product row to several hundred pixels tall.
+	 *
+	 * Rather than strip anyone's columns, give the cramped ones a floor and let
+	 * the table scroll sideways instead of crushing itself. Admin-only: this has
+	 * no effect on the storefront, the product feed or Merchant Center.
+	 */
+	public function admin_list_css(): void {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( null === $screen ) {
+			return;
+		}
+		if ( 'edit-product' === $screen->id ) {
+			echo '<style id="toptech-admin-list">'
+				. '.post-type-product #posts-filter{overflow-x:auto}'
+				. '.post-type-product table.wp-list-table{min-width:1600px;table-layout:auto}'
+				. '.post-type-product th.column-rank_math_seo_details,'
+				. '.post-type-product td.column-rank_math_seo_details{width:230px;min-width:230px;white-space:normal;word-break:normal}'
+				. '.post-type-product th.column-name,.post-type-product td.column-name{min-width:260px}'
+				. '.post-type-product th.column-sku,.post-type-product td.column-sku,'
+				. '.post-type-product th.column-isbn,.post-type-product td.column-isbn,'
+				. '.post-type-product th.column-price,.post-type-product td.column-price{min-width:100px}'
+				. '.post-type-product th.column-date,.post-type-product td.column-date{min-width:115px}'
+				. '.post-type-product th.column-thumb,.post-type-product td.column-thumb{width:64px}'
+				. '</style>' . "\n";
+		}
+	}
 }
