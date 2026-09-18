@@ -11,6 +11,7 @@ $rk_phone    = get_theme_mod( 'toptech_phone', '0797 720290' );
 $rk_email    = get_theme_mod( 'toptech_email', 'info@toptechmachinery.co.ke' );
 $rk_address  = get_theme_mod( 'toptech_address', 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya' );
 $rk_whatsapp = get_theme_mod( 'toptech_whatsapp', '254797720290' );
+$rk_hours    = get_theme_mod( 'toptech_hours', 'Mon-Sat 8:00am - 6:00pm' );
 ?>
 </div><!-- #content -->
 <footer class="rk-footer">
@@ -21,6 +22,7 @@ $rk_whatsapp = get_theme_mod( 'toptech_whatsapp', '254797720290' );
 				<p><?php esc_html_e( 'Your trusted supplier of power tools, solar, and hardware in Kenya. Genuine brands, fair prices, fast delivery countrywide.', 'toptech-machinery' ); ?></p>
 				<p><strong><?php esc_html_e( 'Address:', 'toptech-machinery' ); ?></strong><br><?php echo esc_html( $rk_address ); ?></p>
 				<p><a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $rk_phone ) ); ?>"><?php echo esc_html( $rk_phone ); ?></a> &middot; <a href="mailto:<?php echo esc_attr( $rk_email ); ?>"><?php echo esc_html( $rk_email ); ?></a></p>
+				<p><strong><?php esc_html_e( 'Opening hours:', 'toptech-machinery' ); ?></strong><br><?php echo esc_html( $rk_hours ); ?><br><?php esc_html_e( 'Closed Sundays and public holidays.', 'toptech-machinery' ); ?></p>
 			</div>
 			<div>
 				<h3><?php esc_html_e( 'Customer Service', 'toptech-machinery' ); ?></h3>
@@ -33,10 +35,10 @@ $rk_whatsapp = get_theme_mod( 'toptech_whatsapp', '254797720290' );
 			<div>
 				<h3><?php esc_html_e( 'We Accept', 'toptech-machinery' ); ?></h3>
 				<div class="rk-payments">
-					<span>M-PESA</span><span>Visa</span><span>Mastercard</span><span>Cash on Delivery</span>
+					<span>M-PESA</span><span>Visa</span><span>Mastercard</span><span><?php esc_html_e( 'Cash on delivery (Nairobi)', 'toptech-machinery' ); ?></span>
 				</div>
 				<h3 style="margin-top:18px"><?php esc_html_e( 'Secure Shopping', 'toptech-machinery' ); ?></h3>
-				<div class="rk-payments"><span>SSL Secured</span><span>Verified Business</span></div>
+				<div class="rk-payments"><span><?php esc_html_e( 'SSL secured checkout', 'toptech-machinery' ); ?></span><span><?php esc_html_e( 'Walk-in shop in Nairobi', 'toptech-machinery' ); ?></span></div>
 			</div>
 		</div>
 	</div>
