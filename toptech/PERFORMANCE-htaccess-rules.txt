@@ -1,8 +1,20 @@
 # ==============================================================
-# TOPTECH MACHINERY - performance rules (compression + browser cache + WebP)
+# TOPTECH MACHINERY - performance rules (compression + browser cache)
 # Copy EVERYTHING below into the .htaccess file in your WordPress
 # ROOT folder (public_html), ABOVE the line "# BEGIN WordPress".
 # Back the file up first. These are plain Apache rules - no plugin.
+#
+# NOTE: this file previously also contained a WebP content-negotiation
+# block (rewriting name.jpg to name.jpg.webp based on the Accept header).
+# It has been REMOVED deliberately - do not add it back. It served
+# image/webp content from .jpg URLs, and its Vary header was scoped to
+# <FilesMatch "\.(jpe?g|png)$">, which never matched the rewritten .webp
+# filename. Caches therefore stored the WebP as the only representation
+# of the .jpg URL, and Google Merchant Center disapproved 108 products
+# with "Image not processed" (Sept 2026). With the long max-age below, a
+# wrong-format response could now persist for a year. If WebP is wanted
+# later, serve it from its own .webp URL via <picture> markup instead of
+# negotiating at the .jpg URL.
 # ==============================================================
 
 # ---- Text compression (Gzip) ----
@@ -38,20 +50,5 @@
 <IfModule mod_headers.c>
   <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|css|js|woff2|woff|ttf|otf|mp4)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
-  </FilesMatch>
-</IfModule>
-
-# ---- Auto-serve WebP when a matching .webp file exists ----
-# (Only takes effect once an image optimizer has generated name.jpg.webp files.
-#  Safe: it only rewrites when the .webp actually exists on disk.)
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteCond %{HTTP_ACCEPT} image/webp
-  RewriteCond %{REQUEST_FILENAME}\.webp -f
-  RewriteRule (.+)\.(jpe?g|png)$ $1.$2.webp [T=image/webp,L]
-</IfModule>
-<IfModule mod_headers.c>
-  <FilesMatch "\.(jpe?g|png)$">
-    Header append Vary Accept
   </FilesMatch>
 </IfModule>
