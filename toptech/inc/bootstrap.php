@@ -25,6 +25,7 @@ $toptech_modules = array(
 		'ToptechMachinery\\Merchant_Inspector',
 	'ToptechMachinery\\Cookie_Consent',
 	'ToptechMachinery\\Customer_Reviews',
+	'ToptechMachinery\\Conversion_Events',
 );
 
 foreach ( $toptech_modules as $toptech_class ) {
