@@ -141,16 +141,24 @@ final class Assets {
 		}
 		if ( 'edit-product' === $screen->id ) {
 			echo '<style id="toptech-admin-list">'
-				. '.post-type-product #posts-filter{overflow-x:auto}'
-				. '.post-type-product table.wp-list-table{min-width:1600px;table-layout:auto}'
-				. '.post-type-product th.column-rank_math_seo_details,'
-				. '.post-type-product td.column-rank_math_seo_details{width:230px;min-width:230px;white-space:normal;word-break:normal}'
-				. '.post-type-product th.column-name,.post-type-product td.column-name{min-width:260px}'
-				. '.post-type-product th.column-sku,.post-type-product td.column-sku,'
+				// Hide the GTIN/UPC/EAN/ISBN column. It is empty for every product
+				// here and machinery is not sold by barcode, so it only costs width.
+				// Several candidate class names are listed because the column comes
+				// from WooCommerce core on some versions and a plugin on others; a
+				// selector that matches nothing is harmless.
+				. '.post-type-product th.column-global_unique_id,.post-type-product td.column-global_unique_id,'
 				. '.post-type-product th.column-isbn,.post-type-product td.column-isbn,'
-				. '.post-type-product th.column-price,.post-type-product td.column-price{min-width:100px}'
-				. '.post-type-product th.column-date,.post-type-product td.column-date{min-width:115px}'
-				. '.post-type-product th.column-thumb,.post-type-product td.column-thumb{width:64px}'
+				. '.post-type-product th.column-gtin,.post-type-product td.column-gtin{display:none}'
+				// Let the table size itself to the viewport. No min-width and no
+				// overflow wrapper: a horizontal scrollbar on a 40-page list is worse
+				// than slightly narrow cells.
+				. '.post-type-product table.wp-list-table{table-layout:auto}'
+				// A floor just wide enough that "Keyword: Not Set" wraps as words
+				// rather than one letter per line, which was the original fault.
+				. '.post-type-product th.column-rank_math_seo_details,'
+				. '.post-type-product td.column-rank_math_seo_details{min-width:150px;white-space:normal;word-break:normal;overflow-wrap:break-word}'
+				. '.post-type-product th.column-name,.post-type-product td.column-name{min-width:190px}'
+				. '.post-type-product th.column-thumb,.post-type-product td.column-thumb{width:52px}'
 				. '</style>' . "\n";
 		}
 	}
