@@ -24,6 +24,10 @@ final class Schema {
 		add_action( 'wp_head', array( $this, 'website' ), 6 );
 		add_action( 'wp_head', array( $this, 'breadcrumb' ), 7 );
 		add_action( 'wp_footer', array( $this, 'product' ), 20 );
+		// Rank Math owns the product JSON-LD when active; extend it rather than
+		// duplicating it. Registered unconditionally: the filter simply never
+		// fires when Rank Math is absent.
+		add_filter( 'rank_math/snippet/rich_snippet_product_entity', array( $this, 'rank_math_product' ) );
 	}
 
 	/**
@@ -441,6 +445,49 @@ final class Schema {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Add the return and shipping properties to Rank Math's product schema.
+	 *
+	 * On this site Rank Math emits the Product JSON-LD, so this class's own
+	 * product() output is suppressed by has_seo_plugin() and anything added
+	 * there would never reach the page. Rank Math's Offer carries price,
+	 * availability, itemCondition, priceValidUntil, seller and url, but not
+	 * hasMerchantReturnPolicy or shippingDetails, which are the two properties
+	 * Google reads for Shopping and free listings. They are injected here into
+	 * whichever Offer node Rank Math built, reusing the same definitions as the
+	 * native output so the two can never disagree.
+	 *
+	 * @param mixed $entity Rank Math product entity (array when well-formed).
+	 * @return mixed
+	 */
+	public function rank_math_product( $entity ) {
+		if ( is_array( $entity ) === false ) {
+			return $entity;
+		}
+		if ( isset( $entity['offers'] ) === false || is_array( $entity['offers'] ) === false ) {
+			return $entity;
+		}
+
+		$return_policy = $this->return_policy();
+		$shipping      = $this->shipping_details();
+
+		// A single Offer is keyed directly; multiple Offers arrive as a list.
+		if ( isset( $entity['offers']['@type'] ) ) {
+			$entity['offers']['hasMerchantReturnPolicy'] = $return_policy;
+			$entity['offers']['shippingDetails']         = $shipping;
+			return $entity;
+		}
+
+		foreach ( $entity['offers'] as $key => $offer ) {
+			if ( is_array( $offer ) ) {
+				$entity['offers'][ $key ]['hasMerchantReturnPolicy'] = $return_policy;
+				$entity['offers'][ $key ]['shippingDetails']         = $shipping;
+			}
+		}
+
+		return $entity;
 	}
 
 	private function brand_name( \WC_Product $product ): string {
