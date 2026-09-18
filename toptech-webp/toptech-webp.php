@@ -2,7 +2,7 @@
 /**
  * Plugin Name: TopTech WebP Optimizer
  * Description: One-click WebP. Converts every JPEG and PNG in your Media Library to WebP, auto-converts new uploads, and serves WebP automatically to browsers that support it. Just install and activate - no settings to configure. Originals are never deleted.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: TopTech Machinery
  * License: GPLv2 or later
  * Requires at least: 5.5
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TOPTECH_WEBP_VER', '1.0.0' );
+define( 'TOPTECH_WEBP_VER', '1.0.1' );
 define( 'TOPTECH_WEBP_QUALITY', 82 );
 define( 'TOPTECH_WEBP_BATCH', 10 );
 define( 'TOPTECH_WEBP_MARKER', 'TopTech WebP' );
@@ -228,8 +228,16 @@ function toptech_webp_htaccess_lines() {
 		'  RewriteRule (.+)\.(jpe?g|png)$ $1.$2.webp [T=image/webp,L]',
 		'</IfModule>',
 		'<IfModule mod_headers.c>',
-		'  <FilesMatch "\.(jpe?g|png)$">',
-		'    Header append Vary Accept',
+		'  # Vary must accompany BOTH representations of the same URL. The rewrite',
+		'  # above resolves image.jpg to the file image.jpg.webp, and FilesMatch',
+		'  # tests that resolved filename, so a pattern limited to jpe?g|png never',
+		'  # matched the WebP response. Caches then treated the WebP as the only',
+		'  # representation of the .jpg URL and served it to clients that asked for',
+		'  # JPEG, which is what made Google Merchant Center report images as not',
+		'  # processed. Matching webp too keeps the header on every variant, and',
+		'  # merge (rather than append) avoids emitting "Vary: Accept, Accept".',
+		'  <FilesMatch "\.(jpe?g|png|webp)$">',
+		'    Header merge Vary Accept',
 		'  </FilesMatch>',
 		'</IfModule>',
 		'<IfModule mod_mime.c>',
@@ -263,6 +271,25 @@ function toptech_webp_remove_htaccess() {
 	}
 }
 
+/**
+ * Re-write the managed .htaccess block whenever the plugin version changes, so
+ * a corrected ruleset ships by updating this file alone. The block is otherwise
+ * only written on activation, which would leave an existing install serving the
+ * old rules until someone deactivated and reactivated the plugin.
+ */
+add_action( 'admin_init', 'toptech_webp_maybe_refresh_htaccess' );
+function toptech_webp_maybe_refresh_htaccess() {
+	if ( get_option( 'toptech_webp_htaccess_ver' ) === TOPTECH_WEBP_VER ) {
+		return;
+	}
+	if ( function_exists( 'current_user_can' ) === false || current_user_can( 'manage_options' ) === false ) {
+		return;
+	}
+	if ( toptech_webp_write_htaccess() ) {
+		update_option( 'toptech_webp_htaccess_ver', TOPTECH_WEBP_VER );
+	}
+}
+
 /* -------------------------------------------------------------------------
  * Background processing via WP-Cron (so it finishes even without clicking).
  * ---------------------------------------------------------------------- */
@@ -288,7 +315,9 @@ function toptech_webp_cron_run() {
  * ---------------------------------------------------------------------- */
 register_activation_hook( __FILE__, 'toptech_webp_activate' );
 function toptech_webp_activate() {
-	toptech_webp_write_htaccess();
+	if ( toptech_webp_write_htaccess() ) {
+		update_option( 'toptech_webp_htaccess_ver', TOPTECH_WEBP_VER );
+	}
 	if ( ! wp_next_scheduled( 'toptech_webp_cron' ) ) {
 		wp_schedule_event( time() + 60, 'toptech_webp_5min', 'toptech_webp_cron' );
 	}
@@ -306,6 +335,7 @@ function toptech_webp_deactivate() {
 register_uninstall_hook( __FILE__, 'toptech_webp_uninstall' );
 function toptech_webp_uninstall() {
 	delete_option( 'toptech_webp_failed' );
+	delete_option( 'toptech_webp_htaccess_ver' );
 }
 
 /* -------------------------------------------------------------------------
