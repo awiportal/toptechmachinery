@@ -55,14 +55,14 @@ final class Single_Product {
 		echo '<div class="rk-pdp-delivery">';
 		echo $this->icon( '<rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle>' ); // phpcs:ignore
 		echo '<div><strong>' . esc_html__( 'Fast delivery across Kenya.', 'toptech-machinery' ) . '</strong><br>';
-		echo '<span>' . esc_html__( 'Nairobi: same/next-day. Countrywide: 1-3 business days. Order by phone/WhatsApp:', 'toptech-machinery' ) . ' ' . $phone . '</span></div>';
+		echo '<span>' . esc_html__( 'Nairobi: 1-2 working days. Countrywide: 1-5 working days. Order by phone/WhatsApp:', 'toptech-machinery' ) . ' ' . $phone . '</span></div>';
 		echo '</div>';
 
 		// Trust badges.
 		echo '<ul class="rk-trust">';
 		$badges = array(
-			array( '<path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"></path><path d="M9 12l2 2 4-4"></path>', __( '100% Genuine Products', 'toptech-machinery' ) ),
-			array( '<path d="M20 6L9 17l-5-5"></path>', __( 'Warranty Included', 'toptech-machinery' ) ),
+			array( '<path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"></path><path d="M9 12l2 2 4-4"></path>', __( 'Walk-in Shop in Nairobi', 'toptech-machinery' ) ),
+			array( '<path d="M20 6L9 17l-5-5"></path>', __( 'Manufacturer Warranty', 'toptech-machinery' ) ),
 			array( '<rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>', __( 'Secure Checkout', 'toptech-machinery' ) ),
 			array( '<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path><path d="M12 7v5l3 2"></path>', __( 'Responsive Support', 'toptech-machinery' ) ),
 		);
@@ -73,7 +73,7 @@ final class Single_Product {
 
 		// Payment methods.
 		echo '<div class="rk-pdp-pay"><span class="rk-pdp-pay__label">' . esc_html__( 'We accept:', 'toptech-machinery' ) . '</span>';
-		foreach ( array( 'M-PESA', 'Visa', 'Mastercard', 'Cash on Delivery' ) as $pay ) {
+		foreach ( array( 'M-PESA', 'Visa', 'Mastercard', 'Cash on delivery (Nairobi)' ) as $pay ) {
 			echo '<span class="rk-pay-chip">' . esc_html( $pay ) . '</span>';
 		}
 		echo '</div>';
@@ -112,10 +112,10 @@ final class Single_Product {
 	public function faq_tab(): void {
 		$phone = esc_html( get_theme_mod( 'toptech_phone', '0797 720290' ) );
 		$faqs  = array(
-			array( __( 'How soon can I get this delivered?', 'toptech-machinery' ), __( 'Nairobi orders are typically delivered same or next business day. Other towns take 1-3 business days. Confirm timing on checkout or by calling us.', 'toptech-machinery' ) ),
+			array( __( 'How soon can I get this delivered?', 'toptech-machinery' ), __( 'Orders confirmed before 3:00pm on a working day are dispatched the same day. Nairobi and its environs then take 1 to 2 working days, major towns 1 to 3, and other areas 2 to 5. See our Shipping & Delivery Policy, or confirm timing at checkout or by calling us.', 'toptech-machinery' ) ),
 			array( __( 'How do I pay?', 'toptech-machinery' ), __( 'We accept M-PESA, Visa, Mastercard and cash on delivery where available. All online payments are processed securely.', 'toptech-machinery' ) ),
-			array( __( 'Is this product genuine and covered by warranty?', 'toptech-machinery' ), __( 'Yes. We stock only genuine products from authorised suppliers, backed by the manufacturer warranty where applicable.', 'toptech-machinery' ) ),
-			array( __( 'Can I return it if there is a problem?', 'toptech-machinery' ), __( 'Faulty or incorrect items can be returned within 7 days. See our Return & Refund Policy for details.', 'toptech-machinery' ) ),
+			array( __( 'Is this product genuine and covered by warranty?', 'toptech-machinery' ), __( 'We buy from established suppliers and pass on the manufacturer warranty that comes with the item. As a guide, most power tools carry six to twelve months and many generators and solar products carry twelve months or more; the exact period is shown on the product page or in the papers in the box. See our Warranty Policy.', 'toptech-machinery' ) ),
+			array( __( 'Can I return it if there is a problem?', 'toptech-machinery' ), __( 'You may request a return within 14 days of delivery, on both faulty and non-faulty items, and we accept exchanges. See our Return & Refund Policy for details.', 'toptech-machinery' ) ),
 			array( __( 'How do I get help before buying?', 'toptech-machinery' ), __( 'Call or WhatsApp us and our team will help you choose the right tool for the job.', 'toptech-machinery' ) . ' ' . $phone ),
 		);
 		echo '<div class="rk-faq">';
