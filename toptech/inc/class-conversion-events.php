@@ -9,8 +9,8 @@
  * the phone and WhatsApp half of the business and was optimising toward a
  * signal that represents part of it.
  *
- * This emits two named events so they appear in Google Ads under detected
- * events, where each can be promoted to a conversion action:
+ * This emits two named events, each also sent directly to its Google Ads
+ * conversion action, so Ads counts them without waiting on event detection:
  *
  *   contact_phone_click     - any tel: link (header, footer, contact page, PDP)
  *   contact_whatsapp_click  - any wa.me / WhatsApp link, including the float
@@ -20,7 +20,9 @@
  * - one delegated listener on the document, so every present and future link
  *   is covered without editing each template
  * - no gtag of its own. It rides the tag Google for WooCommerce already loads
- *   (AW-18452419534), and does nothing if that tag is absent
+ *   (AW-18431692376), and does nothing if that tag is absent. The site tag was
+ *   relinked on 18 Sep 2026; the earlier AW-18452419534 belongs to the
+ *   superseded checkout-visit Purchase action, demoted to Secondary that day
  * - consent aware by inheritance: the Cookie_Consent module denies ad_storage
  *   until the visitor accepts, so these events are modelled rather than
  *   cookie-attributed for anyone who declines. That is the intended behaviour
@@ -28,10 +30,11 @@
  * - page-cache safe: the markup is identical for every visitor and carries no
  *   per-user or per-order data
  *
- * A click is intent, not a sale. These should start life as Secondary
- * conversions in Google Ads so they inform reporting without distorting a
- * Maximize conversion value strategy, and only be promoted once there is
- * enough volume to judge how often a contact becomes an order.
+ * A click is intent, not a sale. Both are configured as Secondary conversions
+ * in Google Ads (created 18 Sep 2026, Contact category, count Every, no
+ * value) so they inform reporting without distorting the Maximize conversion
+ * value strategy. Promote them only once there is enough volume to judge how
+ * often a contact actually becomes an order, and attach a value then.
  *
  * @package ToptechMachinery
  */
@@ -61,9 +64,16 @@ final class Conversion_Events {
 		echo '<script id="toptech-conv-events">';
 		echo <<<'JS'
 ( function () {
+var MAP = {
+contact_phone_click: 'AW-18431692376/RjxPCNnWjPwcENic9dRE',
+contact_whatsapp_click: 'AW-18431692376/wrlKCN7Wi_wcENic9dRE'
+};
 function send( name, href ) {
 if ( typeof window.gtag === 'function' ) {
 window.gtag( 'event', name, { link_url: href, page_path: location.pathname } );
+if ( typeof MAP[ name ] === 'string' ) {
+window.gtag( 'event', 'conversion', { send_to: MAP[ name ] } );
+}
 }
 }
 document.addEventListener( 'click', function ( e ) {
