@@ -23,6 +23,7 @@ $toptech_modules = array(
 	'ToptechMachinery\\Demo_Import',
 	'ToptechMachinery\\Single_Product',
 		'ToptechMachinery\\Merchant_Inspector',
+	'ToptechMachinery\\Cookie_Consent',
 );
 
 foreach ( $toptech_modules as $toptech_class ) {
