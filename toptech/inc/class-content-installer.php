@@ -258,7 +258,7 @@ final class Content_Installer {
         $phone = '0797 720290';
         $mail  = 'info@toptechmachinery.co.ke';
         $addr  = 'This & That Exhibition, Opp. Ronald Ngala Post Office, Shop G15, Ronald Ngala Street, Nairobi, Kenya';
-        $upd   = '<p><em>Last updated: 17 September 2026</em></p>';
+        $upd   = '<p><em>Last updated: 18 September 2026</em></p>';
 
         return array(
             'about-us' => array(
@@ -287,7 +287,7 @@ final class Content_Installer {
             ),
             'warranty-policy' => array(
                 'title'   => 'Warranty Policy',
-                'content' => "{$upd}<p>The tools and equipment we sell carry the manufacturer's warranty. This page explains what that covers and how to make a claim.</p><h2>Warranty period</h2><p>How long the cover lasts depends on the brand and the type of product. As a guide, most power tools carry six to twelve months, and many generators and solar products carry twelve months or more. The exact period is shown on the product page or in the papers that come with the item.</p><h2>What is covered</h2><p>The warranty covers faults in materials or workmanship under normal use. If a covered item fails, it will be repaired or replaced; where neither is possible, a refund is arranged in line with the manufacturer's terms.</p><h2>What is not covered</h2><p>Normal wear and tear and consumable parts are not covered, and neither is damage caused by misuse, overloading, dropping, the wrong power supply, water, unauthorised repairs or not following the manufacturer's instructions.</p><h2>How to make a claim</h2><p>Contact us on {$phone} or {$mail} with your order number, your receipt and a short description of the fault. Keep the original box and accessories where you can. We will guide you through the claim and, where needed, book the item in with the manufacturer's service centre.</p><h2>Proof of purchase</h2><p>You will need your receipt or order confirmation for any warranty claim, so please keep it safe.</p><h2>Returns within 14 days</h2><p>If the fault appears within 14 days of delivery, you can use our Return &amp; Refund Policy instead, which is usually quicker.</p><p>{$name}, {$addr}. {$phone} / {$mail}.</p>",
+                'content' => "{$upd}<p>The tools and equipment we sell carry the manufacturer's warranty. This page explains what that covers and how to make a claim.</p><h2>Warranty period</h2><p>How long the cover lasts depends on the brand and the type of product. As a guide, most power tools carry six to twelve months, and many generators and solar products carry twelve months or more. The exact period is shown on the product page or in the papers that come with the item.</p><h2>Solar panel performance warranties</h2><p>Solar panels work differently from other products. Alongside the cover described above, which deals with faults in the panel itself, most manufacturers also publish a long-term performance warranty, often of 20 to 25 years, guaranteeing that the panel will still produce a stated share of its rated output after a given number of years. Where a product page, label or box mentions a period of that length, it refers to the manufacturer's performance warranty rather than to our own handling of faults, and it is claimed through the manufacturer. We will help you start that claim and point you to the right service contact. A panel that arrives faulty or fails in normal use is handled under the periods set out above.</p><h2>What is covered</h2><p>The warranty covers faults in materials or workmanship under normal use. If a covered item fails, it will be repaired or replaced; where neither is possible, a refund is arranged in line with the manufacturer's terms.</p><h2>What is not covered</h2><p>Normal wear and tear and consumable parts are not covered, and neither is damage caused by misuse, overloading, dropping, the wrong power supply, water, unauthorised repairs or not following the manufacturer's instructions.</p><h2>How to make a claim</h2><p>Contact us on {$phone} or {$mail} with your order number, your receipt and a short description of the fault. Keep the original box and accessories where you can. We will guide you through the claim and, where needed, book the item in with the manufacturer's service centre.</p><h2>Proof of purchase</h2><p>You will need your receipt or order confirmation for any warranty claim, so please keep it safe.</p><h2>Returns within 14 days</h2><p>If the fault appears within 14 days of delivery, you can use our Return &amp; Refund Policy instead, which is usually quicker.</p><p>{$name}, {$addr}. {$phone} / {$mail}.</p>",
             ),
             'payment-methods' => array(
                 'title'   => 'Payment Methods',
@@ -314,7 +314,7 @@ final class Content_Installer {
      * pages or clobbering later manual edits. Idempotent (own flag).
      */
     public function refresh_pages_content(): void {
-        if ( get_option( 'toptech_pages_content_v4' ) ) {
+        if ( get_option( 'toptech_pages_content_v5' ) ) {
             return;
         }
         if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
@@ -333,7 +333,7 @@ final class Content_Installer {
                     )
                 );
             }
-            update_option( 'toptech_pages_content_v4', time() );
+            update_option( 'toptech_pages_content_v5', time() );
         } catch ( \Throwable $e ) {
             error_log( 'TopTech Machinery pages content refresh failed: ' . $e->getMessage() );
         }
