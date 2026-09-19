@@ -35,7 +35,7 @@ $rk_hours    = get_theme_mod( 'toptech_hours', 'Mon-Sat 8:00am - 6:00pm' );
 			<div>
 				<h3><?php esc_html_e( 'We Accept', 'toptech-machinery' ); ?></h3>
 				<div class="rk-payments">
-					<span>M-PESA</span><span>Visa</span><span>Mastercard</span><span><?php esc_html_e( 'Cash on delivery (Nairobi)', 'toptech-machinery' ); ?></span>
+					<span>M-PESA</span><span>Visa (in shop)</span><span>Mastercard (in shop)</span><span><?php esc_html_e( 'Cash on delivery (Nairobi)', 'toptech-machinery' ); ?></span>
 				</div>
 				<h3 style="margin-top:18px"><?php esc_html_e( 'Secure Shopping', 'toptech-machinery' ); ?></h3>
 				<div class="rk-payments"><span><?php esc_html_e( 'SSL secured checkout', 'toptech-machinery' ); ?></span><span><?php esc_html_e( 'Walk-in shop in Nairobi', 'toptech-machinery' ); ?></span></div>
