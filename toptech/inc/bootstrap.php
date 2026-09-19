@@ -26,6 +26,7 @@ $toptech_modules = array(
 	'ToptechMachinery\\Cookie_Consent',
 	'ToptechMachinery\\Customer_Reviews',
 	'ToptechMachinery\\Conversion_Events',
+	'ToptechMachinery\\Analytics',
 );
 
 foreach ( $toptech_modules as $toptech_class ) {
