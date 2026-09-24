@@ -1,6 +1,6 @@
 <?php
 /**
- * Google Analytics 4 and Google Tag Manager.
+ * Google Analytics 4.
  *
  * The shop carried no analytics at all: only the Google Ads conversion tag
  * (AW-18431692376) appeared on any page, while the cookie banner and Cookie
@@ -11,15 +11,27 @@
  * Ordering is deliberate. Cookie_Consent registers an unscoped consent default
  * at wp_head priority 1 and defines window.dataLayer and gtag() there. A
  * consent default is only honoured before the first measurement call, so
- * everything here runs after it, at priorities 2 and 3, and never redefines
- * gtag(). GA4 therefore inherits analytics_storage: denied until the visitor
- * accepts, and is modelled rather than cookie-attributed for anyone who
- * declines, per the Data Protection Act, 2019.
+ * everything here runs after it, at priority 3, and never redefines gtag().
+ * GA4 therefore inherits analytics_storage: denied until the visitor accepts,
+ * and is modelled rather than cookie-attributed for anyone who declines, per
+ * the Data Protection Act, 2019.
  *
- * Double-counting warning: GA4 is configured here directly via gtag. The GTM
- * container is loaded for tag management but must NOT also contain a GA4
- * Configuration tag for this same measurement ID, or every hit counts twice.
- * Add other tags to GTM freely; leave GA4 to this module.
+ * Google Tag Manager was removed on 24 Sep 2026. Container GTM-TJKKRVCV was
+ * loaded on every page of the site, in the head and again as a noscript iframe
+ * after the body tag, and the container was empty: its only published version
+ * was literally named "Empty Container", with zero tags, zero triggers and
+ * zero variables. Every visitor paid for a third-party request, plus the
+ * container script, to run nothing.
+ *
+ * Removing it also retires the double-counting hazard this file used to warn
+ * about. GA4 is configured here directly via gtag, so a GA4 Configuration tag
+ * added to that container for the same measurement ID would have counted every
+ * hit twice -- a mistake that is easy to make and hard to notice, and one that
+ * corrupts the conversion data a Maximize conversion value bid strategy feeds
+ * on. With no container on the page, the hazard cannot recur by accident.
+ *
+ * If tag management is wanted later, re-add the container loader and keep GA4
+ * here: put other vendors' tags in GTM and leave this measurement ID alone.
  *
  * The inline JavaScript deliberately avoids the logical-negation operator and
  * uses strict equality with inverted branches instead. The deployment
@@ -38,35 +50,16 @@ namespace ToptechMachinery;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Loads GA4 and the Google Tag Manager container.
+ * Loads GA4.
  */
 final class Analytics {
 
-	/** GA4 measurement ID. Stream ID 15809086207. */
+	/** GA4 measurement ID. Stream ID 15809086207, property 555053091. */
 	private const GA4_ID = 'G-80DN7N0BXT';
 
-	/** Google Tag Manager container ID. */
-	private const GTM_ID = 'GTM-TJKKRVCV';
-
 	public function hooks(): void {
-		// Priorities 2 and 3 must follow Cookie_Consent's consent default at 1.
-		add_action( 'wp_head', array( $this, 'gtm_head' ), 2 );
+		// Priority 3 must follow Cookie_Consent's consent default at 1.
 		add_action( 'wp_head', array( $this, 'ga4_head' ), 3 );
-		add_action( 'wp_body_open', array( $this, 'gtm_noscript' ), 1 );
-	}
-
-	/** Google Tag Manager container loader. */
-	public function gtm_head(): void {
-		if ( is_admin() ) {
-			return;
-		}
-		$gtm = esc_js( self::GTM_ID );
-		echo '<script id="toptech-gtm">';
-		echo "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});";
-		echo "var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=(l==='dataLayer')?'':'&l='+l;";
-		echo "j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;";
-		echo "f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','" . $gtm . "');";
-		echo '</script>' . "\n";
 	}
 
 	/**
@@ -86,13 +79,5 @@ final class Analytics {
 		echo "gtag( 'js', new Date() );";
 		echo "gtag( 'config', '" . $ga4 . "' );";
 		echo '</script>' . "\n";
-	}
-
-	/** Google Tag Manager noscript fallback, immediately after the body tag. */
-	public function gtm_noscript(): void {
-		if ( is_admin() ) {
-			return;
-		}
-		echo '<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=' . esc_attr( self::GTM_ID ) . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>' . "\n";
 	}
 }
