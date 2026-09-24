@@ -27,6 +27,7 @@ $toptech_modules = array(
 	'ToptechMachinery\\Customer_Reviews',
 	'ToptechMachinery\\Conversion_Events',
 	'ToptechMachinery\\Analytics',
+	'ToptechMachinery\\Seo_Sitemap',
 );
 
 foreach ( $toptech_modules as $toptech_class ) {
