@@ -263,11 +263,11 @@ final class Content_Installer {
         return array(
             'about-us' => array(
                 'title'   => 'About Us',
-                'content' => "<p>{$name} is a Nairobi-based supplier of power tools, solar equipment, generators, water pumps, welding machines and general hardware. We serve contractors, fundis, farmers, small businesses and homeowners, and we deliver countrywide across Kenya.</p><h2>What we sell</h2><p>We stock well-known brands such as Total, Ingco, Makita, Bosch, Honda and Solarmax, alongside dependable value options. Everything we carry is sourced from authorised distributors, so the item you buy is genuine and covered by the manufacturer's warranty.</p><h2>How we work</h2><p><strong>Clear pricing.</strong> All prices are shown in Kenya Shillings (KSh) and include VAT where it applies. There are no hidden fees.</p><p><strong>Fast dispatch.</strong> Orders confirmed before 3:00pm on a working day are dispatched the same day. Delivery then takes 1 to 5 working days depending on your location.</p><p><strong>Expert support.</strong> If you are not sure which tool or machine suits the job, call or WhatsApp us and we will help you decide.</p><h2>Visit or contact us</h2><p><strong>Shop:</strong> {$addr}</p><p><strong>Phone and WhatsApp:</strong> {$phone}<br><strong>Email:</strong> {$mail}</p><p><strong>Opening hours:</strong> Monday to Saturday, 8:00am to 6:00pm. Closed on Sundays and public holidays.</p>",
+                'content' => "<p>{$name} is a Nairobi-based supplier of power tools, solar equipment, generators, water pumps, welding machines and general hardware. We serve contractors, fundis, farmers, small businesses and homeowners, and we deliver countrywide across Kenya.</p><h2>What we sell</h2><p>We stock well-known brands such as Total, Ingco, Makita, Bosch, Honda and Solarmax, alongside dependable value options. Everything we carry is sourced from authorised distributors, so the item you buy is genuine and covered by the manufacturer's warranty.</p><h2>How we work</h2><p><strong>Clear pricing.</strong> All prices are shown in Kenya Shillings (KSh) and include VAT where it applies. There are no hidden fees.</p><p><strong>Fast dispatch.</strong> Orders confirmed before 3:00pm on a working day are dispatched the same day. Delivery then takes 1 to 5 working days depending on your location.</p><p><strong>Expert support.</strong> If you are not sure which tool or machine suits the job, call or WhatsApp us and we will help you decide.</p><h2>Visit or contact us</h2><p><strong>Shop:</strong> {$addr}</p><p><strong>Phone and WhatsApp:</strong> {$phone}<br><strong>Email:</strong> {$mail}</p><p><strong>Opening hours:</strong> Monday to Saturday, 8:00am to 6:00pm. Closed on Sundays and public holidays.</p><h2>Business information</h2><p>{$name} is a trading name of Interglobe Enterprises, Nairobi, Kenya. You can reach us at {$addr}, on {$phone}, or by email at {$mail}.</p>",
             ),
             'contact-us' => array(
                 'title'   => 'Contact Us',
-                'content' => "<p>You can reach {$name} by phone, WhatsApp, email or in person at our Nairobi shop. We answer most calls and messages the same day during opening hours.</p><h2>Phone and WhatsApp</h2><p>Call or message us on {$phone}. WhatsApp is usually the quickest way to send a photo of what you need or to place an order.</p><h2>Email</h2><p>Write to us at {$mail}. Please include your order number if your message is about an order you have already placed.</p><h2>Our shop</h2><p>{$addr}</p><p>Open Monday to Saturday, 8:00am to 6:00pm. Closed on Sundays and public holidays.</p><h2>How to reach us</h2><p>The quickest way to reach us is a call or WhatsApp on {$phone}. You can also email us and we will reply within one working day.</p><p class=\"rk-contact-actions\"><a class=\"rk-btn rk-btn--primary\" href=\"tel:+254797720290\">Call {$phone}</a> <a class=\"rk-btn rk-btn--primary\" href=\"https://wa.me/254797720290\">WhatsApp us</a> <a class=\"rk-btn rk-btn--ghost\" href=\"mailto:{$mail}\">Email us</a></p>",
+                'content' => "<p>You can reach {$name} by phone, WhatsApp, email or in person at our Nairobi shop. We answer most calls and messages the same day during opening hours.</p><h2>Phone and WhatsApp</h2><p>Call or message us on {$phone}. WhatsApp is usually the quickest way to send a photo of what you need or to place an order.</p><h2>Email</h2><p>Write to us at {$mail}. Please include your order number if your message is about an order you have already placed.</p><h2>Our shop</h2><p>{$addr}</p><p>Open Monday to Saturday, 8:00am to 6:00pm. Closed on Sundays and public holidays.</p><h2>How to reach us</h2><p>The quickest way to reach us is a call or WhatsApp on {$phone}. You can also email us and we will reply within one working day.</p><p class=\"rk-contact-actions\"><a class=\"rk-btn rk-btn--primary\" href=\"tel:+254797720290\">Call {$phone}</a> <a class=\"rk-btn rk-btn--primary\" href=\"https://wa.me/254797720290\">WhatsApp us</a> <a class=\"rk-btn rk-btn--ghost\" href=\"mailto:{$mail}\">Email us</a></p><h2>Business information</h2><p>{$name} is a trading name of Interglobe Enterprises, Nairobi, Kenya.</p>",
             ),
             'privacy-policy' => array(
                 'title'   => 'Privacy Policy',
@@ -314,7 +314,7 @@ final class Content_Installer {
      * pages or clobbering later manual edits. Idempotent (own flag).
      */
     public function refresh_pages_content(): void {
-        if ( get_option( 'toptech_pages_content_v9' ) ) {
+        if ( get_option( 'toptech_pages_content_v10' ) ) {
             return;
         }
         if ( function_exists( 'current_user_can' ) === false || current_user_can( 'edit_theme_options' ) === false ) {
@@ -333,7 +333,7 @@ final class Content_Installer {
                     )
                 );
             }
-            update_option( 'toptech_pages_content_v9', time() );
+            update_option( 'toptech_pages_content_v10', time() );
         } catch ( \Throwable $e ) {
             error_log( 'TopTech Machinery pages content refresh failed: ' . $e->getMessage() );
         }

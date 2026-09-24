@@ -45,6 +45,7 @@ $rk_hours    = get_theme_mod( 'toptech_hours', 'Mon-Sat 8:00am - 6:00pm' );
 	<div class="rk-footer__bar">
 		<div class="container">
 			&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>. <?php esc_html_e( 'All rights reserved.', 'toptech-machinery' ); ?>
+				<br><?php esc_html_e( 'TopTech Machinery is a trading name of Interglobe Enterprises, Nairobi, Kenya.', 'toptech-machinery' ); ?>
 			<span aria-hidden="true"> &middot; </span><button type="button" id="toptech-cc-open"><?php esc_html_e( 'Cookie settings', 'toptech-machinery' ); ?></button>
 		</div>
 	</div>
